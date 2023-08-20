@@ -6,12 +6,14 @@ enum MnemonicClass {
     IS,
     DL,
     AD
-} ; 
+}; 
 
 class Mnemonic {
 public:
     MnemonicClass mclass;
     int opCode;
+
+    Mnemonic(){}
 
     Mnemonic( MnemonicClass mclass , int opCode ) {
         this -> mclass = mclass;
@@ -33,6 +35,7 @@ public:
         }
     }
 }; 
+
 
 class MnemonicTable {
     unordered_map<string,Mnemonic> mnemonics = {
@@ -57,6 +60,8 @@ class MnemonicTable {
     }; 
 
 public:
+    MnemonicTable(){}
+
     Mnemonic getMnemonic( string name ) {
         return mnemonics[ name ] ; 
     }
@@ -64,6 +69,5 @@ public:
     bool isMnemonic( string token ) {
         return mnemonics.find( token ) != mnemonics.end() ; 
     }
-
 }; 
 

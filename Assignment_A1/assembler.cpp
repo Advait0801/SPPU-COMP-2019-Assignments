@@ -1,10 +1,11 @@
-#include<iostream>
+#include <fstream>
+#include <iostream>
 #include "tokenizer.cpp"
 #include "symboltable.cpp"
-#include <fstream>
+#include "literaltable.cpp"
 using namespace std;
 
-class Assembler {
+class Assembler{
     unordered_map<string,int> conditionCodes = {
         { "LT" , 1 } , 
         { "LE" , 2 } , 
@@ -12,21 +13,21 @@ class Assembler {
         { "GT" , 4 } ,
         { "GE" , 5 } , 
         { "ANY" , 6 }
-    } ;
+    };
 
     unordered_map<string,int> registerCodes = {
         { "AREG" , 1 } , 
         { "BREG" , 2 } , 
         { "CREG" , 3 } ,
         { "DREG" , 4 }
-    } ;
-
+    };
 
     vector<vector<string>> instructionTokens;
     fstream outputStream;
     SymbolTable symbolTable;
     Tokenizer tokenizer;
     MnemonicTable mnemonicTable;
+    LiteralTable literalTable;
 
     vector<string> getLines( string sourceFilepath ) {
         fstream inputStream( sourceFilepath , ios::in ) ; 
@@ -54,13 +55,14 @@ public:
         outputStream = fstream( "ic.txt" , ios::out ) ; 
         mnemonicTable = MnemonicTable() ; 
         symbolTable = SymbolTable() ; 
+        literalTable = LiteralTable() ; 
     }
 
     void performPass1() {
         int locationCounter = 0 ; 
+        literalTable.newPool() ; 
         for( int i = 0 ; i < instructionTokens.size() ; i++ ) {
             vector<string> instruction = instructionTokens[i] ; 
-            cout << "Instruction: " << instruction[1] << "\n" ; 
             string mnemonic_string = instruction[1] ;
             Mnemonic mnemonic = mnemonicTable.getMnemonic( mnemonic_string ) ; 
 
@@ -102,10 +104,16 @@ public:
                 }
             }
 
+            if( mnemonic_string == "LTORG" ) {
+                literalTable.newPool() ; 
+                literalTable.initializeLiterals( locationCounter ) ; 
+                outputStream << "  (" << mnemonic.getClass() << " , " << mnemonic.opCode << ")" << "\n" ;
+            }
+
             if( mnemonic_string == "EQU" ) {
                 if( instruction[2].find( "+" ) != string::npos ) {
                     string symbolName = instruction[2].substr( 0 , instruction[2].find( "+" ) ) ;
-                    int offset = std::stoi(instruction[2].substr( instruction[2].find( "+" ) + 1 , instruction[2].length() )) ; 
+                    int offset = stoi(instruction[2].substr( instruction[2].find( "+" ) + 1 , instruction[2].length() )) ; 
                     int address = symbolTable.getSymbolAddress( symbolName ) + offset ; 
                     symbolTable.setSymbol( instruction[0] , address ) ; 
                     outputStream << "  (" << mnemonic.getClass() << " , " << mnemonic.opCode << ")  (" << "S , " 
@@ -136,6 +144,7 @@ public:
             }
 
             if( mnemonic_string == "END" ) {
+                literalTable.initializeLiterals( locationCounter ) ; 
                 break;
             }
 
@@ -148,6 +157,9 @@ public:
                     << mnemonic.opCode << ")  (" << "S , " << symbolTable.getSymbolIndex(instruction[2]) << ")" << "\n" ; 
                 }
                 else if( mnemonic_string == "BC" ) {
+                    if( !symbolTable.find( instruction[3] ) ) {
+                        symbolTable.setSymbol( instruction[3] , -1 ) ;
+                    }
                     outputStream << locationCounter << "  (" << mnemonic.getClass() << " , " 
                     << mnemonic.opCode << ")  (" << conditionCodes[instruction[2]] << ")  " << "(" << "S , " << symbolTable.getSymbolIndex(instruction[3]) << ")" << "\n" ;
                 }
@@ -155,12 +167,22 @@ public:
                     outputStream << "  (" << mnemonic.getClass() << " , " << mnemonic.opCode << ")" << "\n";
                 }
                 else {
-                    if( !symbolTable.find( instruction[3] ) ) {
-                        symbolTable.setSymbol( instruction[3] , -1 ) ;
+                    if( instruction[3][0] == '=' ) {
+                        // Insert literal
+                        string literal = instruction[3].substr( 2 , instruction[3].find( '\'' ) ) ; 
+                        // cout << literal << "\n" ; 
+                        literalTable.setLiteral( literal , -1 ) ;
+                        outputStream << locationCounter << "  (" << mnemonic.getClass() << " , " 
+                        << mnemonic.opCode << ")  (" << registerCodes[instruction[2]] << ")  " << "(" << "L , " << literalTable.getLiteralIndex(literal) << ")" << "\n" ;
                     }
-                    
-                    outputStream << locationCounter << "  (" << mnemonic.getClass() << " , " 
-                    << mnemonic.opCode << ")  (" << registerCodes[instruction[2]] << ")  " << "(" << "S , " << symbolTable.getSymbolIndex(instruction[3]) << ")" << "\n" ;
+                    else {
+                        // Insert symbol
+                        if( !symbolTable.find( instruction[3] ) ) {
+                            symbolTable.setSymbol( instruction[3] , -1 ) ;
+                        }
+                        outputStream << locationCounter << "  (" << mnemonic.getClass() << " , " 
+                        << mnemonic.opCode << ")  (" << registerCodes[instruction[2]] << ")  " << "(" << "S , " << symbolTable.getSymbolIndex(instruction[3]) << ")" << "\n" ;
+                    }
                 }
                 locationCounter++ ; 
             }
@@ -181,7 +203,19 @@ public:
 
         }
         outputStream.close() ; 
-        symbolTable.print() ; 
-    }
 
-} ;
+        fstream inputStream( "../ic.txt" , ios::in ) ; 
+        string sourceContents = "" ;
+        char c = inputStream.get() ; 
+        while( !inputStream.eof() ) {
+            sourceContents += c;
+            c = inputStream.get();  
+        }
+        cout << sourceContents << "\n" ; 
+
+        cout << "----------------Symbol Table ----------------- " << "\n" ; 
+        symbolTable.print() ; 
+        cout << "----------------Literal Table ----------------- " << "\n" ; 
+        literalTable.print() ; 
+    }
+};
