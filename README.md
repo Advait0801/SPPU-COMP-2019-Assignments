@@ -1,1 +1,17 @@
-# SPPU-COMP-2019-Assignments
+# SPPU COMP 2019 Assignments
+
+## Subjects
+
+### Semester 5
+1. [LP 01](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/LP1)
+2. [DBSL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DBMSL)
+3. [CNSL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/CNSL)
+
+### Semester 4
+1. [DSAL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DSAL)
+2. [Microprocessor](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/MPL)
+
+### Semester 3
+1. [DSL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DSL)
+2. [OOP-CGL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/OOPCGL)
+
