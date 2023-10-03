@@ -75,45 +75,38 @@ elif octets[0] >= 224 and octets[0] <= 239:
 elif octets[0] >= 240 and octets[0] <= 254:
     print( "Class of given IP: Class E" )
 
-while True:
-    print("""
-        Options: 
-        1. CIDR Number (ex. 27)
-        2. Number of subnets (ex. 8)
-        """)
-    option = int( input( "Enter option: " ) )
-    if option == 1:
-        cidr_num = int( input( "Enter CIDR Number: ") )
-        subnet_mask = cidr_subnet_generation( cidr_num ) 
-        result = boolean_and( ip_bin , subnet_mask )
 
-        num_hosts = 2**(32-cidr_num)
-        print( "Number of hosts available: " , num_hosts )
-        print( "Subnet mask: " , ip_decimal_generation( subnet_mask ) , "/" , cidr_num )
-        print( "Starting address of subnet: " , ip_decimal_generation( result ) )
-        result_octets = ip_octet_generation( result )
-        ip_addresses = ip_address_generation( result_octets , num_hosts )
-        print( "Network address: " , ip_addresses[0] )
-        print( "Broadcast address: " , ip_addresses[-1] ) 
-        break
-
-    elif option == 2:
-
-        num_subnets = int( input( "Enter number of subnets: " ) )
-        num_hosts_per_class = {
-            "A": 256 * 256 * 256 , 
-            "B": 256 * 256 , 
-            "C": 256
-        }
-        num_hosts_per_subnet = num_hosts_per_class[ ip_class ] // num_subnets
-        num_host_bits = int( math.log2( num_hosts_per_subnet ) )
-        num_network_bits = 32 - num_host_bits
-        subnet_mask = cidr_subnet_generation( num_network_bits )
-        print( "Maximum hosts possible in this IP class: " , num_hosts_per_class[ ip_class ] )
-        print( "Number of hosts per subnet (all): " , num_hosts_per_subnet ) 
-        print( "Number of hosts per subnet (usable): " , num_hosts_per_subnet - 2 ) 
-        print( "Subnet mask required: " , ip_decimal_generation( subnet_mask ) , "/" , num_network_bits )
-        break
-
-
+print("""
+    Options: 
+    1. CIDR Number (ex. 27)
+    2. Number of subnets (ex. 8)
+    """)
+option = int( input( "Enter option: " ) )
+if option == 1:
+    cidr_num = int( input( "Enter CIDR Number: ") )
+    subnet_mask = cidr_subnet_generation( cidr_num ) 
+    result = boolean_and( ip_bin , subnet_mask )
+    num_hosts = 2**(32-cidr_num)
+    print( "Number of hosts available: " , num_hosts )
+    print( "Subnet mask: " , ip_decimal_generation( subnet_mask ) , "/" , cidr_num )
+    print( "Starting address of subnet: " , ip_decimal_generation( result ) )
+    result_octets = ip_octet_generation( result )
+    ip_addresses = ip_address_generation( result_octets , num_hosts )
+    print( "Network address: " , ip_addresses[0] )
+    print( "Broadcast address: " , ip_addresses[-1] ) 
+elif option == 2:
+    num_subnets = int( input( "Enter number of subnets: " ) )
+    num_hosts_per_class = {
+        "A": 256 * 256 * 256 , 
+        "B": 256 * 256 , 
+        "C": 256
+    }
+    num_hosts_per_subnet = num_hosts_per_class[ ip_class ] // num_subnets
+    num_host_bits = int( math.log2( num_hosts_per_subnet ) )
+    num_network_bits = 32 - num_host_bits
+    subnet_mask = cidr_subnet_generation( num_network_bits )
+    print( "Maximum hosts possible in this IP class: " , num_hosts_per_class[ ip_class ] )
+    print( "Number of hosts per subnet (all): " , num_hosts_per_subnet ) 
+    print( "Number of hosts per subnet (usable): " , num_hosts_per_subnet - 2 ) 
+    print( "Subnet mask required: " , ip_decimal_generation( subnet_mask ) , "/" , num_network_bits )
 
