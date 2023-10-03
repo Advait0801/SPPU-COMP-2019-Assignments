@@ -41,11 +41,13 @@ public class Pass1 implements Serializable{
     public Pass1( String sourceFilepath ) {
         ArrayList<String> lines = readLines( sourceFilepath ) ; 
         for( String line : lines ) {
-            tokens.add( line.split("") ) ; 
+            tokens.add( line.split(" ") ) ; 
         }
     }
 
     public void perform() {
+        int mdtabPtr = 0 ;
+        int kpdtabPtr = 0 ;
         for( int i = 1 ; i < tokens.size() ; i++ ) { 
             String[] lineTokens = tokens.get( i ) ; 
             System.out.println( Arrays.toString( lineTokens ) ) ;
@@ -66,24 +68,25 @@ public class Pass1 implements Serializable{
                     System.out.println( "Parameter added : " + parameter ) ; 
                     PNTAB.add( parameter.split("=")[0] ) ; 
                 }
-                MNT.add(new MNTableEntry(currentMacroName, numKPD, numPP, 0, 0));
+                MNT.add( new MNTableEntry( currentMacroName , numKPD , numPP , mdtabPtr , kpdtabPtr ) ) ;
                 System.out.println( "Added to map : " + currentMacroName ) ; 
+                kpdtabPtr += numKPD ; 
                 pnTabHashMap.put( currentMacroName , PNTAB ) ;  
             }
             else if( !lineTokens[0].equals( "MACRO" ) &&
              !lineTokens[0].equals( "MEND" ) ) {
                 MDTableEntry entry = new MDTableEntry(); 
                 entry.mnemonic = lineTokens[0] ;   
-                List<String> currentPntab = pnTabHashMap.get( currentMacroName ) ; 
+                List<String> currentPNTAB = pnTabHashMap.get( currentMacroName ) ; 
                 if( lineTokens[1].startsWith( "&" ) ) {
-                    int index = currentPntab.indexOf(lineTokens[1]) ; 
+                    int index = currentPNTAB.indexOf(lineTokens[1]) ; 
                     entry.operand1 = lineTokens[1] ;
                     if( index >= 0 ) { 
                         entry.op1Index = index ; 
                     }
                 }
                 if( lineTokens[2].startsWith( "&" ) ) {
-                    int index = currentPntab.indexOf(lineTokens[2]) ; 
+                    int index = currentPNTAB.indexOf(lineTokens[2]) ; 
                     entry.operand2 = lineTokens[2] ;
                     if( index >= 0 ) { 
                         entry.op2Index = index ; 
@@ -91,34 +94,41 @@ public class Pass1 implements Serializable{
                 }
                 MDT.add( entry ) ; 
             }
+            else if( lineTokens[0].equals( "MEND" ) ) {
+                MDTableEntry entry = new MDTableEntry(); 
+                entry.mnemonic = "MEND" ;
+                MDT.add(entry) ;    
+            }
+            mdtabPtr++ ; 
         }
 
-        // saveTable( MNT , "Assignment_A2/MNT.dat" ) ;
-        // saveTable( KDPTAB , "Assignment_A2/KDPTAB.dat" ) ;
-        // saveTable( PNTAB , "Assignment_A2/PNTAB.dat" ) ;
-        // saveTable( MDT , "Assignment_A2/MDT.dat" ) ;
+        saveTable( MNT , "Assignment_A2/MNT.dat" ) ;
+        saveTable( KDPTAB , "Assignment_A2/KPDTAB.dat" ) ;
+        saveTable( pnTabHashMap , "Assignment_A2/PNTAB.dat" ) ;
+        saveTable( MDT , "Assignment_A2/MDT.dat" ) ;
 
         printPNTAB();
         printMNTAB();
-        printKPDTAB();        
+        printKPDTAB();
+        
     }
 
-    // private static void saveTable( Object table , String filepath ) {
-    //     try {
-    //         FileOutputStream fos = new FileOutputStream( new File( filepath ) ) ; 
-    //         ObjectOutputStream outputStream = new ObjectOutputStream(fos) ; 
-    //         outputStream.writeObject( table );
-    //         outputStream.flush();
-    //         outputStream.close();
-    //         fos.close();
-    //     }
-    //     catch( FileNotFoundException e ){
-    //         e.printStackTrace();
-    //     }
-    //     catch( IOException e ) {
-    //         e.printStackTrace(); 
-    //     }
-    // }
+    private static void saveTable( Object table , String filepath ) {
+        try {
+            FileOutputStream fos = new FileOutputStream( new File( filepath ) ) ; 
+            ObjectOutputStream outputStream = new ObjectOutputStream(fos) ; 
+            outputStream.writeObject( table );
+            outputStream.flush();
+            outputStream.close();
+            fos.close();
+        }
+        catch( FileNotFoundException e ){
+            e.printStackTrace();
+        }
+        catch( IOException e ) {
+            e.printStackTrace(); 
+        }
+    }
 
     private static ArrayList<String> readLines( String filePath ) {
         File textFile = new File( filePath ) ;
