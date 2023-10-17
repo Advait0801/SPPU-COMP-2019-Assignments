@@ -4,7 +4,7 @@
 
 ### Semester 5
 1. [LP 01](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/LP1)
-2. [DBSL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DBMSL)
+2. [DBMSL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DBMSL)
 3. [CNSL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/CNSL)
 4. [AIML Honors](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/AIML_Honors)
    
