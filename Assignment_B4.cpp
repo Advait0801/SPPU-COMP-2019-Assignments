@@ -107,20 +107,23 @@ public:
 };
 
 int main(){
-    vector<int> frameNumbers = { 1 , 3 , 0 , 3 , 5 , 6 , 3 , 4 , 7 , 1 , 0 , 8 } ; 
-    PageReplacement algo( frameNumbers , 3 ) ; 
+    vector<int> frameNumbers = { 7,0,1,2,0,3,0,4,2,3 } ; 
+    PageReplacement algo( frameNumbers , 4 ) ; 
 
-    cout << "First In First Out (FIFO): " << '\n' ; 
+    cout << "First In First Out (FIFO): " << endl ; 
     float fifoRatio = algo.firstInFirstOut() ; 
-    cout << "Miss Ratio: " << fifoRatio << '\n' ; 
+    cout << "Miss Ratio: " << fifoRatio << endl ;
+    cout<<endl; 
 
-    cout << "Least Recently Used (LRU): " << '\n' ; 
+    cout << "Least Recently Used (LRU): " << endl ; 
     float lruRatio = algo.leastRecentlyUsed() ; 
-    cout << "Miss Ratio: " << lruRatio << '\n' ;  
+    cout << "Miss Ratio: " << lruRatio << endl ;  
+    cout<<endl;
 
-    cout << "Optimal: " << '\n' ; 
+    cout << "Optimal: " << endl ; 
     float optimalRatio = algo.optimalApproach() ; 
-    cout << "Miss Ratio: " << optimalRatio << '\n' ; 
+    cout << "Miss Ratio: " << optimalRatio << endl ; 
+    cout<<endl;
 
     return 0;
 }
