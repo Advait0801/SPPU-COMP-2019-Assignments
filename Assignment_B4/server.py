@@ -2,21 +2,50 @@ import socket
 
 HOST = "127.0.0.1"
 PORT = 8080
-BUFFER_SIZE = 4096 * 1024 * 1024
 
-with socket.socket( socket.AF_INET , socket.SOCK_DGRAM ) as server_socket:
-    server_socket.bind( ( HOST , PORT ) )
+with socket.socket( socket.AF_INET , socket.SOCK_STREAM ) as s:
+    s.bind( ( HOST , PORT ) )
+    s.listen()
+    conn , addr = s.accept()
+    with conn:
 
-    while True:
-
-        file_bytes , address = server_socket.recvfrom( BUFFER_SIZE )
-
-        message = file_bytes.decode()
-        file_name_len = ord( message[0] )
-        file_name = message[ 1 : file_name_len + 1 ]
-        print( file_name )
-        file_len = ord( message[ 1 + file_name_len ] )
-        file_bytes = message[ file_name_len + 2 : file_name_len + 2 + file_len ].encode()
-
-        with open( file_name , "wb" ) as file:
-            file.write( file_bytes )
+        while True:
+            data = conn.recv( 1024 )
+    
+            if "[MESSAGE]" in data.decode( "ascii" ):
+                expr = data.decode( "ascii" )
+                expr_start = expr.find( "[MESSAGE]" )
+                expr_len_offset = 9
+                expr_len = ord( expr[ expr_len_offset ] )
+                expr_text = expr[ expr_len_offset + 1 : expr_len_offset + 1 + expr_len ]
+                conn.send( expr_text.encode() )
+    
+            elif "[FILE]" in data.decode( "ascii" ):
+                blob = data.decode( "ascii" )
+                blob_start = blob.find( "[FILE]" )
+                blob_len_offset = 6
+                blob_len = ord( blob[ blob_len_offset ] )
+                blob_content = blob[ blob_len_offset + 1 : blob_len_offset + 1 + blob_len ].encode()
+                print( blob_len )
+                with open( "received_file.txt" , "wb" ) as file:
+                    file.write( blob_content )
+    
+            if "[EXPR]" in data.decode( "ascii" ):
+                expr = data.decode( "ascii" )
+                expr_start = expr.find( "[EXPR]" )
+                expr_len_offset = 6
+                expr_len = ord( expr[ expr_len_offset ] )
+                expr_text = expr[ expr_len_offset + 1 : expr_len_offset + 1 + expr_len ]
+                if "+" in expr_text:
+                    op1 , op2 = map( int , expr_text.split( "+" ) )
+                    conn.send( str( op1 + op2 ).encode() )
+                elif "-" in expr_text:
+                    op1 , op2 = map( int , expr_text.split( "-" ) )
+                    conn.send( str( op1 - op2 ).encode() )
+                elif "*" in expr_text:
+                    op1 , op2 = map( int , expr_text.split( "*" ) )
+                    conn.send( str( op1 * op2 ).encode() )
+                elif "/" in expr_text:
+                    op1 , op2 = map( int , expr_text.split( "/" ) )
+                    conn.send( str( op1 / op2 ).encode() )
+    
