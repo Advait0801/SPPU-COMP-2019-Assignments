@@ -1,0 +1,174 @@
+db.createCollection( "students" ) ;
+
+db.students.insertOne( 
+    {
+        "name": "Shubham" , 
+        "department": "CE" , 
+        "age": 19 , 
+        "year": "TE" , 
+        "city": "Pune" , 
+        "insem_marks": 130 ,
+        "endsem_marks": 280 ,
+        "scores": {
+            "mhtcet": 99.4 , 
+            "jee": 81.8
+        } , 
+        "technologies": [ "java" , "kotlin" , "python" , "rust" , "c++" ]
+    } , 
+) ; 
+
+db.students.insertMany( [  
+    {
+        "name": "Kaustubh" , 
+        "department": "IT" , 
+        "age": 23 , 
+        "year": "TE" , 
+        "city": "Jalgaon" , 
+        "insem_marks": 135 ,
+        "endsem_marks": 310 ,
+        "scores": {
+            "mhtcet": 93.4 , 
+            "jee": 86.8
+        } , 
+        "technologies": [ "python" , "c++" ]
+    } , 
+    {
+        "name": "Advait" , 
+        "department": "CE" , 
+        "age": 20 , 
+        "year": "TE" , 
+        "city": "Pune" , 
+        "insem_marks": 125 ,
+        "endsem_marks": 340 , 
+        "scores": {
+            "mhtcet": 97.6 , 
+            "jee": 96.34
+        } , 
+        "technologies": [ "c++" , "kotlin" , "python" , "dart" ]
+    } , 
+    {
+        "name": "Swaraj" , 
+        "department": "ENTC" , 
+        "age": 22 , 
+        "year": "SE" , 
+        "city": "Pune" , 
+        "insem_marks": 145 ,
+        "endsem_marks": 320 , 
+        "scores": {
+            "mhtcet": 99.4 , 
+            "jee": 97.8
+        } , 
+        "technologies": [ "python" , "rust" , "c++" ]
+    } , 
+    {
+        "name": "Manthan" , 
+        "department": "IT" , 
+        "age": 21 , 
+        "year": "BE" , 
+        "city": "Pune" , 
+        "insem_marks": 150 ,
+        "endsem_marks": 150 , 
+        "scores": {
+            "mhtcet": 94.4 , 
+            "jee": 79.8
+        } , 
+        "technologies": [ "python" , "c++" ]
+    } , 
+    {
+        "name": "Ayush" , 
+        "department": "CE" , 
+        "age": 20 , 
+        "year": "BE" , 
+        "city": "Chandrapur" , 
+        "insem_marks": 110 ,
+        "endsem_marks": 180 , 
+        "scores": {
+            "mhtcet": 91.4 , 
+            "jee": 95.7
+        } , 
+        "technologies": [ "java" , "c++" ]
+    } , 
+] ) ; 
+
+
+// Read Operations
+db.students.find().pretty() ; 
+db.students.find( { 
+    "city": "Pune"
+} ); 
+
+// find with logical operators and projection
+db.students.find( 
+    {
+        $and: [
+            { "insem_marks": { $gt: 120 } } , 
+            { "endsem_marks": { $lt: 150 } }
+        ]
+    } , 
+    { "name": 1 , "year": 1 } // Projection
+) ;
+
+
+// Update Operations
+db.students.updateOne(
+    { "age": 22 } , 
+    { 
+        $set: {
+            "year": "BE"
+        }
+    }
+) ; 
+
+
+// Delete Operations
+db.students.deleteOne( 
+    { "city": "Chandrapur" } 
+) ; 
+// Drop Collection
+db.blog.drop();
+
+
+// Counting Documents In A Collection
+// Precise count
+db.students.countDocuments() ;
+// Count based on collection metadata
+db.students.estimatedDocumentCount() ; 
+
+
+// Logical Operators
+// $and, $or, $not, $nor
+db.students.find( {
+    $and: [
+        { "year": "TE" } ,
+        { "city" : "Pune" } , 
+    ]
+} ) ;
+
+// CEarison Operators
+// $eq, $gt, $lt, $lte, $gte, $ne
+db.students.find( {
+    "insem_marks": { 
+        $gt: 120
+    }
+} ) ; 
+db.students.find( {
+    "scores.jee": {
+        $gt: 95.0
+    }
+} ) ;
+
+// Membership operators
+// $in
+db.students.find( { 
+    "year": {
+        $in: [ "BE" , "TE "]
+    }
+} ) ; 
+
+// Array Operators
+// $size, $all
+db.students.find( {
+    "technologies" : {
+        $size: 4
+    }
+}) ; 
