@@ -1,4 +1,5 @@
 import math
+import subprocess
 
 def dec_to_bin(n):
     b = bin(n)[2:]
@@ -52,6 +53,16 @@ def ip_address_generation(starting_ip_octets , n):
 
     return addresses
 
+def run( command : str ) -> str:
+    p = subprocess.Popen( command , stdout=subprocess.PIPE , shell=True )
+    while True:
+        line = p.stdout.readline().decode( "utf-8" )
+        if not line:
+            break
+        else:
+            yield line
+
+
 input_ip_str = input( "Enter an IPv4 address: " ) 
 octets = list(map( int , input_ip_str.split( "." )))
 ip_bin = []
@@ -76,62 +87,63 @@ elif octets[0] >= 240 and octets[0] <= 254:
     print( "Class of given IP: Class E" )
 
 
-print("""
-    Options: 
-    1. CIDR Number (ex. 27)
-    2. Number of subnets (ex. 8)
-    """)
-option = int( input( "Enter option: " ) )
-if option == 1:
-    cidr_num = int( input( "Enter CIDR Number: ") )
-    subnet_mask = cidr_subnet_generation( cidr_num ) 
-    result = boolean_and( ip_bin , subnet_mask )
-    num_hosts = 2**(32-cidr_num)
-    print( "Number of hosts available: " , num_hosts )
-    print( "Subnet mask: " , ip_decimal_generation( subnet_mask ) , "/" , cidr_num )
-    print( "Starting address of subnet: " , ip_decimal_generation( result ) )
-    result_octets = ip_octet_generation( result )
-    ip_addresses = ip_address_generation( result_octets , num_hosts )
-    print( "Network address: " , ip_addresses[0] )
-    print( "Broadcast address: " , ip_addresses[-1] ) 
-elif option == 2:
-    num_subnets = int( input( "Enter number of subnets: " ) )
-    num_hosts_per_class = {
-        "A": 256 * 256 * 256 , 
-        "B": 256 * 256 , 
-        "C": 256
-    }
-    num_hosts_per_subnet = num_hosts_per_class[ ip_class ] // num_subnets
-    num_host_bits = int( math.log2( num_hosts_per_subnet ) )
-    num_network_bits = 32 - num_host_bits
-    subnet_mask = cidr_subnet_generation( num_network_bits )
-    print( "Maximum hosts possible in this IP class: " , num_hosts_per_class[ ip_class ] )
-    print( "Number of hosts per subnet (all): " , num_hosts_per_subnet ) 
-    print( "Number of hosts per subnet (usable): " , num_hosts_per_subnet - 2 ) 
-    print( "Subnet mask required: " , ip_decimal_generation( subnet_mask ) , "/" , num_network_bits )
+print("CIDR...................")
+cidr_num = int( input( "Enter CIDR Number: ") )
+subnet_mask = cidr_subnet_generation( cidr_num ) 
+result = boolean_and( ip_bin , subnet_mask )
+num_hosts = 2**(32-cidr_num)
+print( "Number of hosts available: " , num_hosts )
+print( "Subnet mask: " , ''.join([str(x) for x in subnet_mask]) , "/" , cidr_num )
+print( "Starting address of subnet: " , ''.join([str(x) for x in result]) )
+result_octets = ip_octet_generation( result )
+ip_addresses = ip_address_generation( result_octets , num_hosts )
+print( "Network address: " , ip_addresses[0] )
+print( "Broadcast address: " , ip_addresses[-1] )
+print()
+print()
 
-    result = boolean_and( ip_bin , subnet_mask )
-    result_octets = ip_octet_generation( result )
-    ip_addresses = ip_address_generation( result_octets , num_hosts_per_subnet * num_subnets )
-    print( "Subnet ranges are: " )
-    subnets = []
-    for i in range( 0 , len(ip_addresses) , num_hosts_per_subnet ):
-        print( ip_addresses[i] , " - " , ip_addresses[i+num_hosts_per_subnet-1] ) 
-        subnets.append( ip_addresses[ i : i+num_hosts_per_subnet ] )
-    self_ip = tuple( octets )
+
+print("Subnet......................")
+num_subnets = int( input( "Enter number of subnets: " ) )
+num_hosts_per_class = {
+    "A": 256 * 256 * 256 , 
+    "B": 256 * 256 , 
+    "C": 256
+}
+num_hosts_per_subnet = num_hosts_per_class[ ip_class ] // num_subnets
+num_host_bits = int( math.log2( num_hosts_per_subnet ) )
+num_network_bits = 32 - num_host_bits
+subnet_mask = cidr_subnet_generation( num_network_bits )
+print( "Maximum hosts possible in this IP class: " , num_hosts_per_class[ ip_class ] )
+print( "Number of hosts per subnet (all): " , num_hosts_per_subnet ) 
+print( "Number of hosts per subnet (usable): " , num_hosts_per_subnet - 2 ) 
+print( "Subnet mask required: " , ''.join([str(x) for x in subnet_mask]) , "/" , num_network_bits )
+result = boolean_and( ip_bin , subnet_mask )
+result_octets = ip_octet_generation( result )
+ip_addresses = ip_address_generation( result_octets , num_hosts_per_subnet * num_subnets )
+print( "Subnet ranges are: " )
+subnets = []
+for i in range( 0 , len(ip_addresses) , num_hosts_per_subnet ):
+    print( ip_addresses[i] , " - " , ip_addresses[i+num_hosts_per_subnet-1] ) 
+    subnets.append( ip_addresses[ i : i+num_hosts_per_subnet ] )
+while True:
+    input_command = input( "Command: " ) 
+    output_lines: list[str] = [ line for line in run( input_command ) ]
+    print( '\n'.join( output_lines ) )
+"""
+while True:
+    input_dst_ip_str = input( "Command: " ) 
+    dst_ip = tuple(map( int , input_dst_ip_str.split()[1].split( "." )))
     
-    while True:
-        input_dst_ip_str = input( "Command: " ) 
-        dst_ip = tuple(map( int , input_dst_ip_str.split()[1].split( "." )))
-        
-        if self_ip == dst_ip:
-            print( "PING SUCCESS (Both IPs are same)" )
-            continue
-        for subnet in subnets:
-            is_found_1 = self_ip in subnet
-            is_found_2 = dst_ip in subnet
-            if is_found_1 and is_found_2:
-                print( "PING SUCCESS (Both IPs are in same subnet)" )
-                break
-        else:
-            print( "PING FAILED (Network is unreachable)" )
+    if self_ip == dst_ip:
+        print( "PING SUCCESS (Both IPs are same)" )
+        continue
+    for subnet in subnets:
+        is_found_1 = self_ip in subnet
+        is_found_2 = dst_ip in subnet
+        if is_found_1 and is_found_2:
+            print( "PING SUCCESS (Both IPs are in same subnet)" )
+            break
+    else:
+        print( "PING FAILED (Network is unreachable)" )
+"""
