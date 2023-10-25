@@ -1,37 +1,46 @@
 import socket
 
-HOST = "127.0.0.1"
-PORT = 8080
-BUFFER = 4096
+def hello_client(client_socket):
+    client_name = input("Enter your name: ")
+    client_socket.send(client_name.encode())
+    message = client_socket.recv(1024).decode()
+    print(f"Server says: {message}")
 
-with socket.socket( socket.AF_INET , socket.SOCK_STREAM ) as s:
-    s.connect( ( HOST , PORT ) )
+def file_transfer_client(client_socket):
+    file_name = "received_file.txt"
+    with open(file_name, 'wb') as file:
+        while True:
+            data = client_socket.recv(1024)
+            if not data:
+                break
+            file.write(data)
+    print(f"File '{file_name}' received successfully.")
 
-    while True:
-        print( 
-        """
-        1. Say Hello
-        2. Transfer File
-        3. Solve arithmetic expression
-        """)
-        option = int( input( "Enter option: " ) )
+def calculator_client(client_socket):
+    expression = input("Enter a mathematical expression: ")
+    client_socket.send(expression.encode())
+    result = client_socket.recv(1024).decode()
+    print(f"Result: {result}")
 
-        if option == 1:
-            message = "[MESSAGE]{}Hello".format( chr( 5 ) )
-            s.send( message.encode() )
-            response = s.recv( BUFFER ).decode( "ascii" )
-            print( "Response from server => " , response )
 
-        elif option == 2:
-            file_path = input( "Enter file path: " )
-            with open( file_path , "rb" ) as file:
-                file_bytes = file.read()
-            message = "[FILE]{}{}".format( chr( len( file_bytes ) ) , file_bytes.decode( "ascii" ) )
-            s.send( message.encode() )
-
-        elif option == 3:
-            expr = input( "Enter expression: " )
-            message= "[EXPR]{}{}".format( chr( len( expr ) ) , expr )
-            s.send( message.encode() )
-            response = s.recv( BUFFER ).decode( "ascii" )
-            print( "Response from server => " , response )
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+host = '127.0.0.1'
+port = 12345  
+client_socket.connect((host, port))
+print("Select an option:")
+print("1. Hello")
+print("2. File Transfer")
+print("3. Calculator")
+print("4. Exit")
+choice = input("Enter your choice: ")
+if choice == '1':
+    hello_client(client_socket)
+elif choice == '2':
+    file_transfer_client(client_socket)
+elif choice == '3':
+    calculator_client(client_socket)
+elif choice == '4':
+    print("Goodbye!")
+else:
+    print("Invalid choice. Please select a valid option.")
+client_socket.close()  # Close the socket when the client is done
