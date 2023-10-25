@@ -1,6 +1,8 @@
-package Assignment_8;
+package Assignment_8.src.main.java;
 
 import java.util.*;
+import Assignment_8.src.main.java.models.Blog;
+import Assignment_8.src.main.java.database.*;
 
 public class Main {
     public static void main( String[] args ) {

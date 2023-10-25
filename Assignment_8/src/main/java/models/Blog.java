@@ -1,4 +1,4 @@
-package Assignment_8;
+package Assignment_8.src.main.java.models;
 
 public class Blog{
     public int id;

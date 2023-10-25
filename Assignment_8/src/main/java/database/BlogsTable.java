@@ -1,7 +1,9 @@
-package Assignment_8;
+package Assignment_8.src.main.java.database;
 
 import java.sql.*;
 import java.util.*;
+
+import Assignment_8.src.main.java.models.Blog;
 
 public class BlogsTable {
     private Connection databaseConnection ; 
