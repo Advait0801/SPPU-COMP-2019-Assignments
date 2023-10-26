@@ -7,7 +7,7 @@ def hello_client(client_socket):
     print(f"Server says: {message}")
 
 def file_transfer_client(client_socket):
-    file_name = "received_file.txt"
+    file_name = "Assignment_B4/received_file.txt"
     with open(file_name, 'wb') as file:
         while True:
             data = client_socket.recv(1024)
