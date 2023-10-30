@@ -1,48 +1,76 @@
-class Router:
-    def __init__(self, name):
-        self.name = name
-        self.routing_table = {}  # {destination: (next_hop, cost)}
+import sys
 
-    def update_routing_table(self, destination, next_hop, cost):
-        if destination not in self.routing_table or cost < self.routing_table[destination][1]:
-            self.routing_table[destination] = (next_hop, cost)
+INF = sys.maxsize
 
-class Network:
-    def __init__(self):
-        self.routers = {}
+def print_distance_vector(distance):
+    print("Distance Vector:", end=' ')
+    for dist in distance:
+        if dist == INF:
+            print("INF", end=' ')
+        else:
+            print(dist, end=' ')
+    print()
 
-    def add_router(self, router):
-        self.routers[router.name] = router
+def dijkstra(graph_points, graph, source):
+    distance = [INF] * graph_points
+    visited = [False] * graph_points
+    parent = [-1] * graph_points
 
-    def send_routing_updates(self):
-        for router_name, router in self.routers.items():
-            for neighbor_name, neighbor in self.routers.items():
-                if router_name != neighbor_name:
-                    for destination, (next_hop, cost) in neighbor.routing_table.items():
-                        if destination not in router.routing_table:
-                            router.update_routing_table(destination, neighbor_name, cost + 1)
-                        else:
-                            if cost + 1 < router.routing_table[destination][1]:
-                                router.update_routing_table(destination, neighbor_name, cost + 1)
+    distance[source] = 0
 
-    def print_routing_tables(self):
-        for router_name, router in self.routers.items():
-            print(f"Routing table for {router_name}:")
-            print("Destination\tNext Hop\tCost")
-            for destination, (next_hop, cost) in router.routing_table.items():
-                print(f"{destination}\t\t{next_hop}\t\t{cost}")
-            print("\n")
+    for count in range(graph_points - 1):
+        u = -1
+        for i in range(graph_points):
+            if not visited[i] and (u == -1 or distance[i] < distance[u]):
+                u = i
+
+        visited[u] = True
+
+        for v in range(graph_points):
+            if not visited[v] and graph[u][v] != -1 and distance[u] != INF and distance[u] + graph[u][v] < distance[v]:
+                distance[v] = distance[u] + graph[u][v]
+                parent[v] = u
+
+        print("Iteration", count + 1, ":")
+        print_distance_vector(distance)
+        print()
+
+    print("Optimal path from node", source, "to every other node:")
+    print("Node\tDistance\tPath")
+    for i in range(graph_points):
+        print(i, end='\t')
+        if distance[i] == INF:
+            print("INF", end='')
+        else:
+            print(distance[i], end='')
+
+        print('\t', end='')
+
+        node = i
+        path = []
+        while node != -1:
+            path.insert(0, node)
+            node = parent[node]
+
+        for j in range(len(path)):
+            print(path[j], end='')
+            if j < len(path) - 1:
+                print(" ->", end=' ')
+        print()
 
 
-A = Router('A')
-B = Router('B')
-C = Router('C')
-network = Network()
-network.add_router(A)
-network.add_router(B)
-network.add_router(C)
-A.update_routing_table('A', 'A', 0)
-B.update_routing_table('B', 'B', 0)
-C.update_routing_table('C', 'C', 0)
-network.send_routing_updates()
-network.print_routing_tables()
+graph_points = int(input("Enter the number of nodes in the network: "))
+graph = [[-1] * graph_points for _ in range(graph_points)]
+for i in range(graph_points):
+    for j in range(graph_points):
+        if i != j:
+            distance = int(input("Enter the distance between node {} and node {}: ".format(i, j)))
+            graph[i][j] = distance
+print()
+print()
+for source in range(graph_points):
+    print("Starting from node", source, ":")
+    dijkstra(graph_points, graph, source)
+    print()
+    print()
+
