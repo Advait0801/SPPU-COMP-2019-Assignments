@@ -1,10 +1,9 @@
-package Assignment_8.src.main.java;
-
 import java.util.*;
-import Assignment_8.src.main.java.models.Blog;
-import Assignment_8.src.main.java.database.*;
+import database.BlogsTable;
+import models.Blog;
 
 public class Main {
+
     public static void main( String[] args ) {
         BlogsTable table = new BlogsTable() ; 
         Scanner scanner = new Scanner( System.in ) ; 

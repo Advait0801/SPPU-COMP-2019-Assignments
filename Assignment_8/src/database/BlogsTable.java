@@ -1,11 +1,11 @@
-package Assignment_8.src.main.java.database;
+package database;
 
 import java.sql.*;
 import java.util.*;
-
-import Assignment_8.src.main.java.models.Blog;
+import models.*;
 
 public class BlogsTable {
+
     private Connection databaseConnection ; 
     private String databaseUrl = "jdbc:mariadb://localhost:3306/Assignment_8" ; 
     private String databaseUser = "root" ; 
@@ -26,7 +26,7 @@ public class BlogsTable {
     public boolean insertBlog( Blog blog ) {
         try {
             Statement statement = databaseConnection.createStatement() ; 
-            String query = "insert into blogs( title , content ) values( 'TITLE' , 'CONTENT' ) ;"
+            String query = "insert into blog( title , content ) values( 'TITLE' , 'CONTENT' ) ;"
                 .replace( "TITLE" , blog.title )
                 .replace( "CONTENT" , blog.content ) ; 
             int affectedRows = statement.executeUpdate( query ) ; 
@@ -41,7 +41,7 @@ public class BlogsTable {
     public List<Blog> getAllBlogs() {
         try {
             Statement statement = databaseConnection.createStatement() ; 
-            String query = "select * from blogs;" ; 
+            String query = "select * from blog;" ; 
             ResultSet results = statement.executeQuery( query ) ; 
             ArrayList<Blog> blogs = new ArrayList<>() ; 
             while( results.next() ) {
@@ -62,7 +62,7 @@ public class BlogsTable {
     public boolean updateBlog( Blog newBlog ) {
         try {
             Statement statement = databaseConnection.createStatement() ; 
-            String query = "update blogs set title='TITLE', content='CONTENT' where id='ID'"
+            String query = "update blog set title='TITLE', content='CONTENT' where id='ID'"
                 .replace( "TITLE" , newBlog.title ) 
                 .replace( "CONTENT" , newBlog.content ) 
                 .replace( "ID" , String.valueOf( newBlog.id ) ) ; 
@@ -78,7 +78,7 @@ public class BlogsTable {
     public boolean deleteBlog( int id ) {
         try {
             Statement statement = databaseConnection.createStatement() ; 
-            String query = "delete from blogs where id='ID'"
+            String query = "delete from blog where id='ID'"
                 .replace( "ID" , String.valueOf( id ) ) ; 
             int affectedRows = statement.executeUpdate( query ) ; 
             return affectedRows > 0 ; 
