@@ -4,58 +4,58 @@ class PageReplacementAlgorithms:
         self.max_num_frames = max_num_frames
 
     def first_in_first_out(self):
-        dq = []
+        frames = []
         page_fault_count = 0
 
         for i in range(len(self.page_numbers)):
-            print(dq)
+            print(frames)
 
-            if self.page_numbers[i] not in dq:
+            if self.page_numbers[i] not in frames:
                 page_fault_count += 1
-                if len(dq) == self.max_num_frames:
-                    dq.pop(0)
-                dq.append(self.page_numbers[i])
+                if len(frames) == self.max_num_frames:
+                    frames.pop(0)
+                frames.append(self.page_numbers[i])
             
         return page_fault_count / len(self.page_numbers)
     
     def least_recently_used(self):
-        v , ages = [], []
+        frames , ages = [], []
         page_fault_count = 0
 
         for i in range(len(self.page_numbers)):
-            print(v)  
+            print(frames)  
 
             for j in range(len(ages)):
                 ages[j] += 1
 
-            if self.page_numbers[i] not in v:
+            if self.page_numbers[i] not in frames:
                 page_fault_count += 1
-                if len(v) == self.max_num_frames:
+                if len(frames) == self.max_num_frames:
                     max_index = ages.index(max(ages))
                     ages.pop(max_index)
-                    v.pop(max_index)
-                    v.insert(max_index, self.page_numbers[i])
+                    frames.pop(max_index)
+                    frames.insert(max_index, self.page_numbers[i])
                     ages.insert(max_index, 0)
                 else:
-                    v.insert(0, self.page_numbers[i])
+                    frames.insert(0, self.page_numbers[i])
                     ages.insert(0, 0)
             else:
-                index = v.index(self.page_numbers[i])
+                index = frames.index(self.page_numbers[i])
                 ages[index] = 0
 
         return page_fault_count / len(self.page_numbers)
     
     def optimal_approach(self):
-        v = []
+        frames = []
         page_fault_count = 0
 
         for i in range(len(self.page_numbers)):
-            print(v)
+            print(frames)
 
-            if self.page_numbers[i] not in v:
+            if self.page_numbers[i] not in frames:
                 page_fault_count += 1
 
-                if len(v) == self.max_num_frames:
+                if len(frames) == self.max_num_frames:
                     max_usage_gap = -1
                     max_usage_gap_index = 0
 
@@ -63,7 +63,7 @@ class PageReplacementAlgorithms:
                         is_found = False
 
                         for j in range(i-1, len(self.page_numbers)):
-                            if self.page_numbers[j] == v[p]:
+                            if self.page_numbers[j] == frames[p]:
                                 is_found = True
                                 if (j-i) > max_usage_gap:
                                     max_usage_gap = j-i
@@ -73,9 +73,9 @@ class PageReplacementAlgorithms:
                             max_usage_gap_index = p
                             break
 
-                    v[max_usage_gap_index] = self.page_numbers[i]
+                    frames[max_usage_gap_index] = self.page_numbers[i]
                 else:
-                    v.append(self.page_numbers[i])
+                    frames.append(self.page_numbers[i])
                 
         return page_fault_count / len(self.page_numbers)
     
