@@ -1,4 +1,4 @@
-package Assignment_A2;
+package Assignment_A2.JAVA;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,7 +6,7 @@ public class Main {
         pass1.perform();
         System.out.println();
         System.out.println();
-        Pass2 pass2 = new Pass2( "Assignment_A2/MNT.dat", "Assignment_A2/KPDTAB.dat", "Assignment_A2/PNTAB.dat", "Assignment_A2/MDT.dat" ) ; 
+        Pass2 pass2 = new Pass2( "Assignment_A2/JAVA/MNT.dat", "Assignment_A2/JAVA/KPDTAB.dat", "Assignment_A2/JAVA/PNTAB.dat", "Assignment_A2/JAVA/MDT.dat" ) ; 
         pass2.processCall( "INCR(A,B,REG=AREG)" );
     }
 }

@@ -1,8 +1,9 @@
-package Assignment_A2;
+package Assignment_A2.JAVA;
 
 import java.io.* ;
 import java.util.*;
-import Assignment_A2.Pass1.*;
+
+import Assignment_A2.JAVA.Pass1.*;
 
 public class Pass2 {
     private HashMap<String,List<String>> pntabMap ; 

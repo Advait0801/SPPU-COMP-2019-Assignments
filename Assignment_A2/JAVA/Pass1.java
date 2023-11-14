@@ -1,4 +1,4 @@
-package Assignment_A2;
+package Assignment_A2.JAVA;
 
 import java.util.*;
 import java.io.*;
@@ -102,10 +102,10 @@ public class Pass1 implements Serializable{
             mdtabPtr++ ; 
         }
 
-        saveTable( MNT , "Assignment_A2/MNT.dat" ) ;
-        saveTable( KDPTAB , "Assignment_A2/KPDTAB.dat" ) ;
-        saveTable( pnTabHashMap , "Assignment_A2/PNTAB.dat" ) ;
-        saveTable( MDT , "Assignment_A2/MDT.dat" ) ;
+        saveTable( MNT , "Assignment_A2/JAVA/MNT.dat" ) ;
+        saveTable( KDPTAB , "Assignment_A2/JAVA/KPDTAB.dat" ) ;
+        saveTable( pnTabHashMap , "Assignment_A2/JAVA/PNTAB.dat" ) ;
+        saveTable( MDT , "Assignment_A2/JAVA/MDT.dat" ) ;
 
         printPNTAB();
         printMNTAB();
