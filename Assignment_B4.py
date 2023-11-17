@@ -55,7 +55,6 @@ class PageReplacementAlgorithms:
 
             if self.page_numbers[i] not in frames:
                 miss_count += 1
-
                 if len(frames) == self.max_num_frames:
                     farthest_index = max((index for index, page in enumerate(frames) if page not in self.page_numbers[i:]))
                     frames[farthest_index] = self.page_numbers[i]                   
