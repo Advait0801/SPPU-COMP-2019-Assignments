@@ -57,24 +57,8 @@ class PageReplacementAlgorithms:
                 miss_count += 1
 
                 if len(frames) == self.max_num_frames:
-                    max_usage_gap = -1
-                    max_usage_gap_index = 0
-
-                    for p in range(self.max_num_frames):
-                        is_found = False
-
-                        for j in range(i-1, len(self.page_numbers)):
-                            if self.page_numbers[j] == frames[p]:
-                                is_found = True
-                                if (j-i) > max_usage_gap:
-                                    max_usage_gap = j-i
-                                    max_usage_gap_index = p
-                        
-                        if is_found == False:
-                            max_usage_gap_index = p
-                            break
-
-                    frames[max_usage_gap_index] = self.page_numbers[i]
+                    farthest_index = max((index for index, page in enumerate(frames) if page not in self.page_numbers[i:]))
+                    frames[farthest_index] = self.page_numbers[i]                   
                 else:
                     frames.append(self.page_numbers[i])
                 print(str(self.page_numbers[i]).ljust(5) + " Miss ".ljust(5) + str(frames))
@@ -85,8 +69,8 @@ class PageReplacementAlgorithms:
     
 
 
-frames = [7,0,1,2,0,3,0,4,2,3,0,3,2,3]
-algo = PageReplacementAlgorithms(frames, 4)
+frames = [3, 1, 2, 1, 6, 5, 1, 3]
+algo = PageReplacementAlgorithms(frames, 3)
 frame_miss_count = 0
 frame_hit_count = 0
 
