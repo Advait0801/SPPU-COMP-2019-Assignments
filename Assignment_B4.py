@@ -8,40 +8,45 @@ class PageReplacementAlgorithms:
         page_fault_count = 0
 
         for i in range(len(self.page_numbers)):
-            print(frames)
+            print(frames, end=' '.ljust(10))
 
             if self.page_numbers[i] not in frames:
+                print(str(self.page_numbers[i]).ljust(10)," Miss ".ljust(10))
                 page_fault_count += 1
                 if len(frames) == self.max_num_frames:
                     frames.pop(0)
                 frames.append(self.page_numbers[i])
+            else:
+                print(str(self.page_numbers[i]).ljust(10)," Hit ".ljust(10))
             
         return page_fault_count / len(self.page_numbers)
     
     def least_recently_used(self):
-        frames , ages = [], []
+        frames , frame_ages = [], []
         page_fault_count = 0
 
         for i in range(len(self.page_numbers)):
-            print(frames)  
+            print(frames, end=' '.ljust(10))  
 
-            for j in range(len(ages)):
-                ages[j] += 1
+            for j in range(len(frame_ages)):
+                frame_ages[j] += 1
 
             if self.page_numbers[i] not in frames:
+                print(str(self.page_numbers[i]).ljust(10)," Miss ".ljust(10))
                 page_fault_count += 1
                 if len(frames) == self.max_num_frames:
-                    max_index = ages.index(max(ages))
-                    ages.pop(max_index)
+                    max_index = frame_ages.index(max(frame_ages))
+                    frame_ages.pop(max_index)
                     frames.pop(max_index)
                     frames.insert(max_index, self.page_numbers[i])
-                    ages.insert(max_index, 0)
+                    frame_ages.insert(max_index, 0)
                 else:
                     frames.insert(0, self.page_numbers[i])
-                    ages.insert(0, 0)
+                    frame_ages.insert(0, 0)
             else:
+                print(str(self.page_numbers[i]).ljust(10)," Hit ".ljust(10))
                 index = frames.index(self.page_numbers[i])
-                ages[index] = 0
+                frame_ages[index] = 0
 
         return page_fault_count / len(self.page_numbers)
     
@@ -50,9 +55,10 @@ class PageReplacementAlgorithms:
         page_fault_count = 0
 
         for i in range(len(self.page_numbers)):
-            print(frames)
+            print(frames, end=' '.ljust(10))
 
             if self.page_numbers[i] not in frames:
+                print(str(self.page_numbers[i]).ljust(10)," Miss ".ljust(10))
                 page_fault_count += 1
 
                 if len(frames) == self.max_num_frames:
@@ -76,12 +82,14 @@ class PageReplacementAlgorithms:
                     frames[max_usage_gap_index] = self.page_numbers[i]
                 else:
                     frames.append(self.page_numbers[i])
+            else:
+                print(str(self.page_numbers[i]).ljust(10)," Hit ".ljust(10))
                 
         return page_fault_count / len(self.page_numbers)
     
 
 
-frames = [7,0,1,2,0,3,0,4,2,3]
+frames = [7,0,1,2,0,3,0,4,2,3,0,3,2,3]
 algo = PageReplacementAlgorithms(frames, 4)
 miss_ratio = 0
 
