@@ -1,42 +1,42 @@
 class MNTableEntry:
-    def __init__(self) -> None:
-        self.name = ''
+    def __init__( self ):
+        self.macro_name = ""
         self.num_kpd = 0
         self.num_pp = 0
-        self.mdtab_ptr = 0
-        self.kpdtab_ptr = 0
-
+        self.mdtab_ptr = 0 
+        self.kpdtab_ptr = 0 
 
 class MDTableEntry:
-    def __init__(self) -> None:
-        self.mnemonic = ''
-        self.operand1 = ''
-        self.operand2 = ''
+    def __init__( self ):
+        self.mnemonic = ""
+        self.operand1 = ""
+        self.operand2 = ""
         self.op1_index = -1
         self.op2_index = -1
 
 
-#Taking MDTAB entries
-print( "MDTAB entries........" )
-num_entries = int( input( "Enter number of entries in MDTAB: " ) )
+#Taking MDTAB entries through a text file
 mdtab = []
-for _ in range( num_entries ):
+mdt_filepath = input( "Enter MDT filepath: " )
+with open( mdt_filepath , "r" ) as file:
+    mdt_contents = file.read()
+    mdt_lines: list[str] = mdt_contents.split( "\n" ) 
+    mdt_line_tokens: list[list[str]] = [ line.split() for line in mdt_lines ]
+
+for line_tokens in mdt_line_tokens:
     entry = MDTableEntry()
-    entry.mnemonic = input( "Enter mnemonic: " )
-    if entry.mnemonic != 'MEND':
-        entry.operand1 = input( "Enter operand 1: " )
-        if entry.operand1.isdigit():
-            entry.op1_index = int( entry.operand1 )
-        entry.operand2 = input( "Enter operand 2: " )
-        if entry.operand2.isdigit():
-            entry.op2_index = int( entry.operand2 )
+    entry.mnemonic = line_tokens[0]
+    if len( line_tokens ) == 3:
+        entry.operand1 = line_tokens[1]
+        if entry.operand1[3].isdigit():
+            entry.op1_index = int( entry.operand1[3] )
+        entry.operand2 = line_tokens[2]
+        if entry.operand2[3].isdigit():
+            entry.op2_index = int( entry.operand2[3] )
     mdtab.append( entry )
-    print()
-print()
-print()
 
 #Taking KPDTAB entries
-print( "KPDTAB entries............" )
+print( "KPDTAB entries........." )
 num_entries = int( input( "Enter number of entries in KPDTAB: " ) )
 kpdtab = []
 for _ in range( num_entries ):
@@ -46,35 +46,30 @@ for _ in range( num_entries ):
     ) )
     print()
 print()
-print()
 
 #Taking MNTAB entries
-print( "MNTAB entries..........." )
+print( "MNTAB entries.........." )
 num_entries = int( input( "Enter number of entries in MNTAB: " ) )
 mntab = []
 for _ in range( num_entries ):
     entry = MNTableEntry()
-    entry.name = input( "Enter macro name: " )
-    entry.num_kpd = int( input( "Enter number of keyword parameters: " ) )
-    entry.num_pp = int( input( "Enter number of positional parameters: " ) )
+    entry.macro_name = input( "Enter macro name: " )
+    entry.num_kpd = int( input( "Enter num. of keyword parameters: " ) )
+    entry.num_pp = int( input( "Enter num. of positional parameters: " ) )
     entry.mdtab_ptr = int( input( "Enter mdtab ptr: " ) )
     entry.kpdtab_ptr = int( input( "Enter kpdtab ptr: " ) )
     mntab.append( entry )
     print()
 print()
-print()
 
-#Taking PNTAB entries
-print( "PNTAB entries........." )
+print( "Enter PNTAB entries:" )
 pntab_map = {}
 for macro in mntab:
-    print( f"Enter parameter for macro {macro.name}: " )
+    print( f"Enter parameters for macro {macro.macro_name}: " )
     pntab = []
     for _ in range( macro.num_kpd + macro.num_pp ):
         pntab.append( input( "Enter parameter name: " ) )
-    pntab_map[ macro.name ] = pntab
-    print()
-print()
+    pntab_map[ macro.macro_name ] = pntab
 print()
 
 #Macro Call
@@ -137,5 +132,3 @@ print( "---------- APTAB --------------" )
 for ( name , val ) in aptab.items():
     print( name , val )
 print()
-
-
