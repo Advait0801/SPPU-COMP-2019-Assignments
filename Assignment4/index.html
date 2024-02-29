@@ -1,0 +1,149 @@
+<html>
+
+    <head>
+        <title>Calculator</title>
+        <script type="text/javascript" src="operations.js"></script>
+    </head>
+
+    <body>
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="style.css"/>
+
+        <form>
+            
+            <input
+                placeholder="First number ..." 
+                class="input-textbox" 
+                type="text" 
+                id="num1">
+            <br>
+
+            <input
+                placeholder="Second number ..." 
+                class="input-textbox" 
+                type="text" 
+                id="num2">
+            <br>
+
+            <table style="margin: 20px;">
+
+                 <tr>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="compute(this)"
+                            value="+">
+                    </td>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="compute(this)"
+                            value="-">
+                    </td>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="percent()"
+                            value="%">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="compute(this)"
+                            value="*">
+                    </td>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="compute(this)"
+                            value="/">
+                    </td>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="cube()"
+                            value="x^3">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="sqrt()"
+                            value="sqrt">
+                    </td>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="sqr()"
+                            value="x^2">
+                    </td>
+
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="cbrt()"
+                            oninput=""
+                            value="cbrt">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="m_to_ft()"
+                            value="m to ft">
+                    </td>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="c_to_f()"
+                            value="C to F">
+                    </td>
+                    <td>
+                        <input
+                            class="button-operator" 
+                            type="button" 
+                            onclick="gram_to_pound()"
+                            value="g to pounds">
+                    </td>
+                </tr>
+
+            </table>
+            
+            <input
+                style="width: 200px; 
+                height: 80px; 
+                background-color: red; 
+                border-radius: 16px;
+                color: black;
+                font-size: 20px;
+                margin: 30px;
+                font-weight: bold;" 
+                type="reset" value="Clear All">
+            <br>
+
+        </form>
+    </body>
+
+
+</html>

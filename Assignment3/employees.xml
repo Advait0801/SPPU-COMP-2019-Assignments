@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database SYSTEM "employees.dtd">
+<?xml-stylesheet type = "text/xsl" href = "employees.xsl"?>   
+<database>
+    <employee>
+        <name>Advait Naik</name>
+        <department>Comp</department>
+        <age>21</age>
+        <gender>Male</gender>
+        <city>Pune</city>
+    </employee>
+    <employee>
+        <name>Manthan Adhav</name>
+        <department>IT</department>
+        <age>20</age>
+        <gender>Male</gender>
+        <city>Jalgaon</city>
+    </employee>
+    <employee>
+        <name>Ridhima Sinare</name>
+        <department>Comp</department>
+        <age>21</age>
+        <gender>Female</gender>
+        <city>Ahmednagar</city>
+    </employee>
+</database>

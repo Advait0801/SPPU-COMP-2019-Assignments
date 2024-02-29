@@ -1,0 +1,108 @@
+/* Reset some default styles */
+body, h1, h2, p, ul, form {
+    margin: 0;
+    padding: 10px;
+}
+
+/* Apply a gradient background to the body representing food-related colors */
+body {
+    background: linear-gradient(to bottom, #ff8c42, #ff3c38);
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden; 
+}
+
+.main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.homepage {
+    position: relative;
+    background: url('background.jpg') center/cover;
+    margin: 0;
+    overflow: hidden; /* Ensure child elements stay within the .homepage container */
+}
+
+/* Dark overlay */
+.homepage::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adjust the alpha value for darkness */
+}
+
+
+.logo-image {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+    transform: translate3d(0, 0, 0); 
+    border-radius: 50%;
+}
+
+form {
+    margin-top: 20px;
+    transform: translate3d(0, 0, 0); 
+}
+
+h1, .p1, .p2 {
+    transform: translate3d(0, 0, 0); 
+    color: antiquewhite;
+    margin: 20px;
+}
+
+h1{
+    text-align: center;
+    padding: 20px;
+}
+
+ul {
+    list-style: none;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+ul hr {
+    margin: 10px 0;
+    color: black;
+}
+
+li {
+    margin-bottom: 10px;
+    font-weight: 400;
+    font-size: 17px;
+}
+
+
+h2 {
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: none;
+}
+
+input[type="submit"] {
+    width: 20rem;
+    background-color: #4caf50;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    margin: 0 auto; 
+    display: block; 
+}
+
