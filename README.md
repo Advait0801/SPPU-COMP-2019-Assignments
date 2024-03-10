@@ -3,8 +3,9 @@
 ## Subjects
 
 ### Semester 6
-1. [WTL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/WTL)
-2. [LP2](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/LP2)
+1. [DSBDAL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DSBDAL)
+2. [WTL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/WTL)
+3. [LP2](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/LP2)
 
 ### Semester 5
 1. [LP1](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/LP1)
