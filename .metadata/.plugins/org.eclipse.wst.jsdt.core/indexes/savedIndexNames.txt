@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+/home/pict/31352/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+2289458316.index
+545917729.index
+2681927917.index
+1193981537.index
+3394722079.index
+1661456277.index
