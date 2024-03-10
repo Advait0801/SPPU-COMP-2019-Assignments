@@ -18,22 +18,20 @@ def job_scheduling(jobs: list[Job]):
             jobs[j-1] = temp
             j -= 1
 
-        max_deadline = max([job.deadline for job in jobs])
-        slot_status = [True for i in range(max_deadline)]
-        max_profit_seq = []
-
-        for job in jobs:
-            for i in range(job.deadline - 1, -1, -1):
-                if slot_status[i] == True:
-                    slot_status[i] = False
-                    max_profit_seq.append(job)
-                    break
-        
-        for job in max_profit_seq:
-            job.display()
-
-        max_profit = sum([job.profit for job in max_profit_seq])
-        return max_profit    
+    max_deadline = max([job.deadline for job in jobs])
+    slot_status = [True for i in range(max_deadline)]
+    max_profit_seq = []
+    for job in jobs:
+        for i in range(job.deadline - 1, -1, -1):
+            if slot_status[i] == True:
+                slot_status[i] = False
+                max_profit_seq.append(job)
+                break
+    
+    for job in max_profit_seq:
+        job.display()
+    max_profit = sum([job.profit for job in max_profit_seq])
+    return max_profit    
 
 
 jobs = [
