@@ -61,7 +61,8 @@ def prims(graph: Graph):
         curr_node = min_weight_edge[0]
         tree_num_nodes += 1
         visited.append(min_weight_edge[0])
-
+    
+    graph.bfs()
     print(min_cost)
 
 
@@ -76,9 +77,10 @@ def kruskals(graph: Graph):
 
         spanning_tree.add_edge(*edge) 
         min_cost += edge[2]
-
+    
+    spanning_tree.bfs()
     print(min_cost)
-    spanning_tree.bfs()  
+      
 
 
 
@@ -90,7 +92,8 @@ graph.add_edge( 0 , 2 , 7 )
 graph.add_edge( 0 , 3 , 10 )
 graph.add_edge( 3 , 4 , 2 )
 graph.add_edge( 0 , 4 , 5 )
-graph.bfs()
 
 prims(graph)
+print()
+kruskals(graph)
  
