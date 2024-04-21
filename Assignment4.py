@@ -11,7 +11,7 @@ Branch and bound technique
 N = 4
 
 # Initial configuration
-config = [ [ 0 for _ in range(N) ] for _ in range(N) ]
+config = [[ 0 for _ in range(N)] for _ in range(N)]
 
 def validate_configuration(configuration, row, col):
     # Check along horizontal axis
@@ -29,7 +29,25 @@ def validate_configuration(configuration, row, col):
         
     return True
 
-def print_board(board):
+def display_board(board):
     for row in board:
         print( row )
     print( "===" * 6 )
+
+def n_queens_algorithm(configuration, col):
+    if col == N:
+        display_board(config)
+        return True
+    
+    for i in range(N):
+        if validate_configuration(configuration, i, col):
+            config[i][col] = 1
+            if n_queens_algorithm(configuration, col + 1):
+                return True
+            config[i][col] = 0
+            
+    return False
+
+
+res = n_queens_algorithm(config, 0)
+print(res)
