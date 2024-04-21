@@ -16,48 +16,54 @@ class Graph:
 
     def dfs_iterative(self, key): #depth first search
         print('Depth First Search Iterative......')
-        stack = [0]
-        visited = [0]
+        stack = [(0, 0)]
+        visited = [(0, 0)]
         search_seq = []
 
         while len(stack) != 0:
             top = stack[-1]
+            top_element = top[0]
+            top_level = top[1]
             stack.pop()
             search_seq.append(top)
 
-            if top == key:
+            if top_element == key:
                 print("Element " + str(key) + " found in the graph !")
                 break
 
-            neighbours = self.adj_list[top]
+            neighbours = self.adj_list[top_element]
             for neighbor in neighbours:
-                if neighbor not in visited:
-                    visited.append(neighbor)
-                    stack.append(neighbor)
+                if neighbor not in [visited_element[0] for visited_element in visited]:
+                    visited.append((neighbor, top_level + 1))
+                    stack.append((neighbor, top_level + 1))
 
-            else:
-                print("Element " + str(key) + ' doesnt exist in the graph')
-            print("Following was the search sequence..." + str(search_seq))
-            print()
+        else:
+            print("Element " + str(key) + ' doesnt exist in the graph')
+        print("Following was the search sequence..." + str(search_seq))
+        print()
 
     def bfs_iterative(self, key): #breadh first search
         print('Breadth First Search Iterative......')
-        queue = [0]
-        visited = [0]
+        queue = [(0, 0)]
+        visited = [(0, 0)]
         search_seq = []
         
         while len(queue) != 0:
             front = queue[0]
+            front_element = front[0]
+            front_level = front[1]
             queue.pop(0)
             search_seq.append(front)
-            if front == key:
+
+            if front_element == key:
                 print("Element " + str(key) + " found in the graph !")
                 break
-            neighbours = self.adj_list[front]
+            
+            neighbours = self.adj_list[front_element]
             for neighbor in neighbours:
                 if neighbor not in visited:
-                    visited.append(neighbor)
-                    queue.append(neighbor)
+                    visited.append((neighbor, front_level + 1))
+                    queue.append((neighbor, front_level + 1))
         else:
             print("Element " + str(key) + ' doesntexist in the graph')
         print("Following was the searchsequence..." + str(search_seq))
@@ -111,17 +117,17 @@ class Graph:
                 
                 
 
-graph = Graph( 4 )
-graph.add_edge( 0 , 1 )
-graph.add_edge( 0 , 2 )
-graph.add_edge( 1 , 2 )
-graph.add_edge( 2 , 3 )
+graph = Graph(5)
+graph.add_edge(0, 1)
+graph.add_edge(0, 2)
+graph.add_edge(1, 3)
+graph.add_edge(1, 4)
 graph.display()
 
 graph.bfs_iterative(3)
 graph.dfs_iterative(3)
 
-graph.bfs_recursive(3)
 graph.dfs_recursive(3)
+graph.bfs_recursive(3)
          
                 
