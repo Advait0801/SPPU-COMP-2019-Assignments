@@ -99,6 +99,8 @@ goal_puzzle = Puzzle( [ [ 1 , 2 , 3 ] , [ 4 , 5 , 6 ] , [ 7 , 8 , 0 ] ] )
 print( "Goal state:" )
 goal_puzzle.display()
 
+print("---------------------------------------")
+
 # The set of nodes which have to expanded
 # AKA frontier or fringe
 open_set: list[Puzzle] = [ init_puzzle ]
@@ -113,36 +115,49 @@ g_score[ init_puzzle ] = 0
 f_score: dict[Puzzle,int] = {}
 f_score[ init_puzzle ] = heuristic(init_puzzle, goal_puzzle)
 
-print( "Steps: ")
-while len( open_set ) != 0:
+num_step = 1
+while len(open_set) != 0:
+    print(">>> Step ", num_step, ":")
 
     # Find the node with smallest f_score 
     # in the open_set
     min_f_score_node = open_set[0]
-    min_f_score = f_score.get( min_f_score_node , INFINITY )
+    min_f_score = f_score.get(min_f_score_node, INFINITY)
     for node in open_set:
-        score = f_score.get( node , INFINITY )
+        score = f_score.get(node, INFINITY)
         if score < min_f_score:
             min_f_score = score 
             min_f_score_node = node
-    
+
+    print(">> Selected state from Frontier: ")    
     current = min_f_score_node
-    print( "-----------------------------" )
     current.display()
+    print()
+    num_step += 1
 
     # Perform goal test
-    if is_goal( current, goal_puzzle ):
-        print( "Done" ) 
+    if is_goal(current, goal_puzzle):
+        print("Done") 
         break
 
-    open_set.remove( current )
-    for neighbor in move( current ):
-        tent_g_score = g_score.get( current , INFINITY ) + 1
+    print(">> Possible States: ")
+    open_set.remove(current)
+    for neighbor in move(current):
+        tent_g_score = g_score.get(current, INFINITY) + 1
         # This condition ensures that no cycles are formed
         # while traversing the graph
-        if tent_g_score < g_score.get( neighbor , INFINITY ):
-            g_score[ neighbor ] = tent_g_score
-            f_score[ neighbor ] = tent_g_score + heuristic( neighbor , goal_puzzle )
+        if tent_g_score < g_score.get(neighbor , INFINITY):
+            g_score[neighbor] = tent_g_score
+            f_score[neighbor] = tent_g_score + heuristic(neighbor, goal_puzzle)
             if neighbor not in open_set:
-                open_set.append( neighbor )
+                open_set.append(neighbor)
+                neighbor.display()
+                print(f"h(n) for above state is {heuristic(neighbor, goal_puzzle)}")
+                print(f"g(n) for above state is {g_score[neighbor]}")
+                print(f"f(n) for above state is {f_score[neighbor]}")
+                print()
+    print()
+    print("-------------------------")
+    print()
+
     
