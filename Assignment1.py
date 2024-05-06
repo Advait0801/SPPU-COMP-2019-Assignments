@@ -1,133 +1,93 @@
 class Graph:
-    def __init__(self, num_nodes) -> None:
-        self.num_nodes = num_nodes
-        self.adj_list = [[] for i in range(self.num_nodes)]
-
+    def __init__(self):
+        self.adjacecy_list = {}
+        
     def add_edge(self, node1, node2):
-        self.adj_list[node1].append(node2)
-        self.adj_list[node2].append(node1)
+        if node1 not in self.adjacecy_list:
+            self.adjacecy_list[node1] = [node2]
+        else:
+            self.adjacecy_list[node1].append(node2)
+
+        if node2 not in self.adjacecy_list:
+            self.adjacecy_list[node2] = [node1]
+        else:
+            self.adjacecy_list[node2].append(node1)
 
     def display(self):
-        print("Following is the adjacency list representation of the graph....")
+        print("Following is the adjacency list of the graph....")
+        for node in self.adjacecy_list.keys():
+            print("Node " + str(node) + " : " + str(self.adjacecy_list[node]))
         print()
-        for i in range(self.num_nodes):
-            print(str(i) + ' ---- ' + str(self.adj_list[i]))
-        print()
-
-    def dfs_iterative(self, key): #depth first search
-        print('Depth First Search Iterative......')
-        stack = [(0, 0)]
-        visited = [(0, 0)]
-        search_seq = []
-
-        while len(stack) != 0:
-            top = stack[-1]
-            top_element = top[0]
-            top_level = top[1]
-            stack.pop()
-            search_seq.append(top)
-
-            if top_element == key:
-                print("Element " + str(key) + " found in the graph !")
-                break
-
-            neighbours = self.adj_list[top_element]
-            for neighbor in neighbours:
-                if neighbor not in [visited_element[0] for visited_element in visited]:
-                    visited.append((neighbor, top_level + 1))
-                    stack.append((neighbor, top_level + 1))
-
-        else:
-            print("Element " + str(key) + ' doesnt exist in the graph')
-        print("Following was the search sequence..." + str(search_seq))
-        print()
-
-    def bfs_iterative(self, key): #breadh first search
-        print('Breadth First Search Iterative......')
-        queue = [(0, 0)]
-        visited = [(0, 0)]
-        search_seq = []
-        
-        while len(queue) != 0:
-            front = queue[0]
-            front_element = front[0]
-            front_level = front[1]
-            queue.pop(0)
-            search_seq.append(front)
-
-            if front_element == key:
-                print("Element " + str(key) + " found in the graph !")
-                break
-            
-            neighbours = self.adj_list[front_element]
-            for neighbor in neighbours:
-                if neighbor not in visited:
-                    visited.append((neighbor, front_level + 1))
-                    queue.append((neighbor, front_level + 1))
-        else:
-            print("Element " + str(key) + ' doesntexist in the graph')
-        print("Following was the searchsequence..." + str(search_seq))
-        print()
-
-    def dfs_recursive(self, key): #depth first search
-        def solve(node, visited, key):
-            print('Visited node ' + str(node))
-
-            if node is None:
-                return
+    
+    def depth_first_search(self, key, start_node):
+        def solve(node, key, visited, level):
+            print("Visited " + str(node) + ", level = " + str(level))
             if node == key:
-                print("Element " + str(key) + " found in the graph !")
-                return
+                print("Element " + str(key) + " found in the graph at level " + str(level))
+                return True
             
-            for neighbor in self.adj_list[node]:
+            visited.append(node)
+            neighbors = self.adjacecy_list.get(node, [])
+            for neighbor in neighbors:
                 if neighbor not in visited:
-                    visited.append(neighbor)
-                    solve(neighbor, visited, key)
-
-        print('Depth First Search Recursive....')
+                    found = solve(neighbor, key, visited, level + 1)
+                    if found:
+                        return True
+                    
+            return False
+        
         visited = []
-        solve(0, visited, key)
-        print()
+        found = solve(start_node, key, visited, 0)
+        if not found:
+            print("Element " + str(key) + ' doesnt exist in the graph')
 
-    def bfs_recursive(self, key): #breadth first search
-        def solve(queue, visited, key):
-            if len(queue) == 0:
-                return
+        
+    def breadth_first_search(self, key, start_node):
+        def solve(frontier, frontier_levels, key, visited):
+            if not frontier:
+                return False
             
-            front = queue[0]
-            queue.pop(0)
-            print('Visited node ' + str(front))
-
-            if front == key:
-                print("Element " + str(key) + " found in the graph !")
-                return
+            node = frontier[0]
+            frontier.pop(0)
+            level = frontier_levels[0]
+            frontier_levels.pop(0)
+            print("Visited " + str(node) + ", level = " + str(level))
+            if node == key:
+                print("Element " + str(key) + " found in the graph at level " + str(level))
+                return True
             
-            visited.append(front)
-            for neighbor in self.adj_list[front]:
+            visited.append(node)
+            neighbors = self.adjacecy_list.get(node, [])
+            for neighbor in neighbors:
                 if neighbor not in visited:
-                    queue.append(neighbor)
-                solve(queue, visited, key)
+                    frontier.append(neighbor)
+                    frontier_levels.append(level + 1)
+            
+            return solve(frontier, frontier_levels, key, visited)
+        
+        visited = []
+        frontier = [start_node]
+        frontier_levels = [0]
+        found = solve(frontier, frontier_levels, key, visited)
+        if not found:
+            print("Element " + str(key) + ' doesnt exist in the graph')
 
 
-        print('Breadth First Search Recursive.....')
-        queue = [0]
-        visited = [0]
-        solve(queue, visited, key)
-        print()
-                
-                
-
-graph = Graph(5)
-graph.add_edge(0, 1)
-graph.add_edge(0, 2)
-graph.add_edge(1, 3)
-graph.add_edge(1, 4)
+graph = Graph()
+print("Enter node-pairs o the graph.....")
+while True:
+    node1 = input("Node 1: ")
+    node2 = input("Node 2: ")
+    if node1 == "-" and node2 == "-":
+        break
+    graph.add_edge(node1, node2)
+    print("Edge added: " + str(node1) + " - " + str(node2))
+print()
 graph.display()
+key = input("Enter key to search: ")
 
-graph.bfs_iterative(3)
-graph.dfs_iterative(3)
-
-graph.dfs_recursive(3)
-graph.bfs_recursive(3)
-         
-                
+start_node = input("Enter start node: ")
+print()
+graph.depth_first_search(key, start_node)
+print()
+graph.breadth_first_search(key, start_node)
