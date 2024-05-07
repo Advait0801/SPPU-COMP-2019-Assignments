@@ -43,6 +43,7 @@ class Graph:
                     queue.append(neighbor[0])
 
         return False
+    
 
 def prims(graph: Graph):
     print("Prims algorithm works as follows.....")
@@ -66,6 +67,7 @@ def prims(graph: Graph):
         visited.append(min_weight_edge[0])
     
     print("Minimum Cost of Spanning Tree by Prim's algorithm is " + str(min_cost))
+    
 
 def kruskals(graph: Graph):
     print("Kruskal's algorithm works as follows....")
