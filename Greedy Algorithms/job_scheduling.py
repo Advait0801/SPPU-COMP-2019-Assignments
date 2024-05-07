@@ -9,15 +9,7 @@ class Job:
 
 
 def job_scheduling(jobs: list[Job]):
-    for i in range(len(jobs)):
-        j = i
-
-        while jobs[j].profit > jobs[j-1].profit and j > 0:
-            temp = jobs[j]
-            jobs[j] = jobs[j-1]
-            jobs[j-1] = temp
-            j -= 1
-
+    jobs = sorted(jobs, key = lambda x:x.profit, reverse = True)
     max_deadline = max([job.deadline for job in jobs])
     slot_status = [True for i in range(max_deadline)]
     max_profit_seq = []
