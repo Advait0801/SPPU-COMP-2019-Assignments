@@ -1,0 +1,21 @@
+public class Maximum{
+    public void compare(integer x, integer y, integer z){
+        if( x!=0 && y!=0 && z!=0){
+            if(x==y && y==z){
+                System.debug('All 3 numbers are equal');
+            }
+            else if(x>y && x>z){
+                System.debug(x +' is the greatest number');
+            }
+            else if(y>x && y>z){
+                System.debug(y +' is the greatest');
+            }
+            else{
+                System.debug(z +' is the greatest');
+            }
+        }
+    }
+}
+
+Maximum m = new Maximum();
+m.compare(21, 22, 23);

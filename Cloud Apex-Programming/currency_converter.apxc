@@ -1,0 +1,25 @@
+public class CurrencyConverter {   
+    public void convertCurrency(String fromCurrency, String toCurrency, double amount){
+        Map<String,Double> conversionRate = new Map<String,Double>{
+            'INR-USD' => 0.012,
+            'USD-INR' => 83.38,
+            'INR-Pound' => 0.0096,
+            'Pound-INR' => 104.63,
+            'USD-Pound' => 0.80,
+            'Pound-USD' => 1.25
+            
+        };
+
+        System.debug('Available Currency Conversions');
+        for(String curr : conversionRate.keySet()){
+            System.debug(curr + ' : ' + conversionRate.get(curr));
+        }
+  
+        String conversionkey = fromCurrency + '-' + toCurrency;
+        double convertedRate = amount * conversionRate.get(conversionkey);
+        System.debug('Converted currency from ' + fromCurrency + ' to ' + toCurrency + ' for amount ' + amount + ' is ' + convertedRate);        
+    }
+}
+
+CurrencyConverter c = new CurrencyConverter();
+c.convertCurrency('INR', 'USD', 80);
