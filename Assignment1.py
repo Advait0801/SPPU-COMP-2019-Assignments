@@ -1,22 +1,22 @@
 class Graph:
     def __init__(self):
-        self.adjacecy_list = {}
+        self.adjacency_list = {}
         
     def add_edge(self, node1, node2):
-        if node1 not in self.adjacecy_list:
-            self.adjacecy_list[node1] = [node2]
+        if node1 not in self.adjacency_list:
+            self.adjacency_list[node1] = [node2]
         else:
-            self.adjacecy_list[node1].append(node2)
+            self.adjacency_list[node1].append(node2)
 
-        if node2 not in self.adjacecy_list:
-            self.adjacecy_list[node2] = [node1]
+        if node2 not in self.adjacency_list:
+            self.adjacency_list[node2] = [node1]
         else:
-            self.adjacecy_list[node2].append(node1)
+            self.adjacency_list[node2].append(node1)
 
     def display(self):
         print("Following is the adjacency list of the graph....")
-        for node in self.adjacecy_list.keys():
-            print("Node " + str(node) + " : " + str(self.adjacecy_list[node]))
+        for node in self.adjacency_list.keys():
+            print("Node " + str(node) + " : " + str(self.adjacency_list[node]))
         print()
     
     def depth_first_search(self, key, start_node):
@@ -27,7 +27,7 @@ class Graph:
                 return True
             
             visited.append(node)
-            neighbors = self.adjacecy_list.get(node, [])
+            neighbors = self.adjacency_list.get(node, [])
             for neighbor in neighbors:
                 if neighbor not in visited:
                     found = solve(neighbor, key, visited, level + 1)
@@ -57,7 +57,7 @@ class Graph:
                 return True
             
             visited.append(node)
-            neighbors = self.adjacecy_list.get(node, [])
+            neighbors = self.adjacency_list.get(node, [])
             for neighbor in neighbors:
                 if neighbor not in visited:
                     frontier.append(neighbor)
