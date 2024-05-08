@@ -47,24 +47,31 @@ class Graph:
 
 def prims(graph: Graph):
     print("Prims algorithm works as follows.....")
-    curr_node = list(graph.adj_list.keys())[0]
+    start_node = list(graph.adj_list.keys())[0]
     graph_num_nodes = len(graph.adj_list)
     tree_num_edges = 1
     min_cost = 0
-    visited = [curr_node]
+    visited = [start_node]
     spanning_tree = Graph()
 
     while tree_num_edges <= graph_num_nodes - 1:
-        min_weight_edge = min([neighbor for neighbor in graph.adj_list[curr_node] if neighbor[0] not in visited], key=lambda x: x[1], default = None)
-        if min_weight_edge is None:
-            continue
+        min_weight_edge = None
+        min_weight = 1e10
 
-        print("Edge added to spanning tree ---> " + str(curr_node) + "-" + str(min_weight_edge[0]) + "-" + str(min_weight_edge[1]))
-        spanning_tree.add_edge(curr_node, min_weight_edge[0], min_weight_edge[1])
-        min_cost += min_weight_edge[1]
-        curr_node = min_weight_edge[0]
+        for v in visited:
+            edge = min([neighbor for neighbor in graph.adj_list[v] if neighbor[0] not in visited], key = lambda x:x[1], default = None)
+            if edge is None:
+                continue
+
+            if edge[1] < min_weight:
+                min_weight = edge[1]
+                min_weight_edge = (v, edge[0], edge[1])
+                
+        print("Edge added to spanning tree ---> " + str(min_weight_edge[0]) + "-" + str(min_weight_edge[1]) + "-" + str(min_weight_edge[2]))
+        spanning_tree.add_edge(min_weight_edge[0], min_weight_edge[1], min_weight_edge[2])
+        min_cost += min_weight_edge[2]
         tree_num_edges += 1
-        visited.append(min_weight_edge[0])
+        visited.append(min_weight_edge[1])
     
     print("Minimum Cost of Spanning Tree by Prim's algorithm is " + str(min_cost))
     
