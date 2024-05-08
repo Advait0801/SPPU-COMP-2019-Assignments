@@ -25,7 +25,7 @@ public class ElectricityBill {
         else{
             amount = 100 * rates.get('0-100') + 200 * rates.get('101-300') + 200 * rates.get('301-500') + (units - 500) * rates.get('>500');
         }
-        System.debug('The Amount is: ' + amount);
+        System.debug('The Bill amount for ' + units + ' is: ' + amount);
     }
 }
 

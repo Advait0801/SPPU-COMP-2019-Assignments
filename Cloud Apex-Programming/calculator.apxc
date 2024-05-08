@@ -1,45 +1,77 @@
-public class Calculator{
-    public double firstnumber{get; set;}
-    public double secondnumber{get; set;}
-    public double result{get; set;}
+public class Calculator {
+	public void add(Integer x, Integer y)
+    {
+        Integer result = x + y;
+        System.debug('Addition: ' + x + ' + ' + y + ' = ' + result);
+    }
     
-    public void Addition(){
-        result = firstnumber + secondnumber;  
+    public void subtract(Integer x, Integer y)
+    {
+        Integer result = x - y;
+        System.debug('Subtraction: ' + x + ' - ' + y + ' = ' + result);
     }
-
-    public void Subtraction(){
-        result = firstnumber - secondnumber;
+    
+    public void multiply(Integer x, Integer y)
+    {
+        Integer result = x * y;
+        System.debug('Multiplication: ' + x + ' * ' + y + ' = ' + result);
     }
-
-    public void Multiplication(){
-        result = firstnumber * secondnumber;
+    
+    public void divide(Integer x, Integer y)
+    {
+        Double result = x / y;
+        if (y==0) {
+            System.debug('Divide by zero error!');
+        }
+        else {
+        System.debug('Subtraction: ' + x + ' + ' + y + ' = ' + result);
+        }
     }
-
-    public void Division(){
-        result = firstnumber / secondnumber;
+    
+    public void modulus(Integer x, Integer y)
+    {
+        Integer result = Math.mod(x,y);
+        System.debug('Modulus: ' + x + ' % ' + y + ' = ' + result);
     }
-
-    public void Modulus(){
-        result = math.mod(firstnumber.intValue(),secondnumber.intValue());
+    
+    public void power(Integer x, Integer y)
+    {
+        Double result = Math.pow(x,y);
+        System.debug('Power: ' + x + ' ^ ' + y + ' = ' + result);
     }
-
-    public void power(){
-        result = math.pow(firstnumber,secondnumber);
+    
+    public void absolute(Integer x)
+    {
+        Integer result = Math.abs(x);
+        System.debug('Absolute of: ' + x + ' = ' + result);
     }
-
-    public void square_root1(){
-        result = math.sqrt(firstnumber);
+    
+    public void square(Integer x)
+    {
+        Integer result1 = Math.pow(x,2);
+        System.debug('Square of: ' + x + ' ^2 = ' + result);
     }
-
-    public void square_root2(){
-        result = math.sqrt(secondnumber);
+    
+    public void factorial(Integer x)
+    {
+        Integer result = 1;
+        for (Integer i=2; i<=x; i++)
+        {
+            result *= i;
+        }
+        System.debug('Factorial of: ' + x + ' = ' + result);
     }
-
-    public void square1(){
-        result = firstnumber * firstnumber;
-    }
-
-    public void square2(){
-        result = secondnumber * secondnumber;
-    }    
 }
+
+Calculator c = new Calculator();
+Integer num1 = 10;
+Integer num2 = 5;
+c.add(num1,num2);
+c.subtract(num1,num2);
+c.multiply(num1,num2);
+c.division(num1,num2);
+c.modulus(num2,3);
+c.power(num1,4);
+c.absolute(-20);
+c.square(num2);
+c.factorial(5);
