@@ -2,6 +2,11 @@
 
 ## Subjects
 
+### Semester 7
+1. [DAA](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DAA)
+2. [ML](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/ML)
+3. [BT](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/BT)
+
 ### Semester 6
 1. [DSBDAL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DSBDAL)
 2. [WTL](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/WTL)
