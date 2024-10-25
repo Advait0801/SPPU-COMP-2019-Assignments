@@ -33,7 +33,7 @@ public:
         }
 
         for(int i=1;i<n;i++) {
-            for(int w=1;w<=maxCapacity;w++) {
+            for(int w=0;w<=maxCapacity;w++) {
                 int notTaken = dp[i-1][w];
                 int taken = INT_MIN;
                 if(weights[i] <= w) taken = values[i] + dp[i-1][w - weights[i]];
@@ -53,7 +53,7 @@ public:
 
         for(int i=1;i<n;i++) {
             vector<int> curr(maxCapacity + 1, 0);
-            for(int w=1;w<=maxCapacity;w++) {
+            for(int w=0;w<=maxCapacity;w++) {
                 int notTaken = prev[w];
                 int taken = INT_MIN;
                 if(weights[i] <= w) taken = values[i] + prev[w - weights[i]];
