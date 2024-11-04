@@ -1,10 +1,10 @@
 import heapq
 
 class Node:
-    def __init__(self, val, symbol):
-        self.val = val
-        self.symbol = symbol
-        self.huffman = ""
+    def __init__(self, n, s) -> None:
+        self.val = n
+        self.symbol = s
+        self.huffman = ''
         self.left = None
         self.right = None
 
@@ -13,20 +13,41 @@ class Node:
     
 
 class HuffmanEncoding:
-    def __init__(self, arr, freq):
+    def __init__(self, text) -> None:
         self.root = None
+        self.input_text = text
+        self.codes = {}
         self.pq = []
 
-        for i in range(len(arr)):
-            node = Node(freq[i], arr[i])
+        self.freqs = {}
+        for char in self.input_text:
+            if char in self.freqs:
+                self.freqs[char] += 1
+            else:
+                self.freqs[char] = 1
+
+        for key, value in self.freqs.items():
+            node = Node(value, key)
             heapq.heappush(self.pq, node)
+
+    def encode(self, node: Node, val=""):
+        new_val = val + node.huffman
+
+        if node.left:
+            self.encode(node.left, new_val)
+        if node.right:
+            self.encode(node.right, new_val)
+
+        if not node.left and not node.right:
+            self.codes[node.symbol] = new_val
 
     def build_tree(self):
         while len(self.pq) > 1:
             l = heapq.heappop(self.pq)
             r = heapq.heappop(self.pq)
-            l.huffman = "0"
-            r.huffman = "1"
+
+            l.huffman = '0'
+            r.huffman = '1'
 
             node = Node(l.val + r.val, l.symbol + r.symbol)
             node.left = l
@@ -35,26 +56,21 @@ class HuffmanEncoding:
 
         self.root = heapq.heappop(self.pq)
 
-    def print_codes(self, node, val=""):
-        new_val = val + node.huffman
+    def display_result(self):
+        print("The character coding is as follows:")
+        self.encode(self.root)
+        for key, value in self.codes.items():
+            print(key + " --> " + value)        
 
-        if node.left:
-            self.print_codes(node.left, new_val)
-
-        if node.right:
-            self.print_codes(node.right, new_val)
-
-        if not node.left and not node.right:
-            print(f"{node.symbol} -> {new_val}")
-
-    def display(self):
-        if self.root:
-            self.print_codes(self.root)
+        encoded_text = ''
+        for char in self.input_text:
+            encoded_text += self.codes.get(char, 0)
+        
+        print("The encoded text is...")
+        print(encoded_text)
 
 
-
-string_arr = ["a", "b", "c", "d", "e"]
-freq_arr = [100, 12, 24, 105, 38]
-huffman_encoding = HuffmanEncoding(string_arr, freq_arr)
-huffman_encoding.build_tree()
-huffman_encoding.display()
+text = input("Enter text to encode")
+he = HuffmanEncoding(text)
+he.build_tree()
+he.display_result()
