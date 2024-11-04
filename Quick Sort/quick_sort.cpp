@@ -38,7 +38,7 @@ public:
 
     void randomQuickSort(vector<int> &arr, int low, int high) {
         if(low < high) {
-            int r = rand() % (high - low) + low;
+            int r = low + rand() % (high - low + 1);
             swap(arr[r], arr[low]);
             int pivot = partition(arr, low, high);
             randomQuickSort(arr, low, pivot);
@@ -49,9 +49,10 @@ public:
 
 
 int main() {
+    srand(time(0));
     QuickSort qs;
 
-    vector<int> x = {10, 12, 15, 20, 1, 4, 17, 16, 11};
+    vector<int> x = {15, 10, 12, 20, 1, 4, 17, 16, 11};
     int n = x.size();
 
     qs.deterministicQuickSort(x, 0, n-1);
