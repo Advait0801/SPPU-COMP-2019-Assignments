@@ -19,12 +19,34 @@ class KnapSack:
         dp[i][capacity] = max(taken, not_taken)
         return max(taken, not_taken)
     
+    def get_selected_items(self, n, capacity, weights, dp, items):
+        i = n - 1
+        w = capacity
+
+        while i >= 0 and w > 0:
+            if i == 0:
+                if dp[i][w] != 0:
+                    items.append(i)
+                break
+
+            if dp[i][w] != dp[i-1][w]:
+                items.append(i)
+                w -= weights[i]
+
+            i -= 1
+        
+        items.reverse()
+    
     def memoization(self, max_capacity, weights, values):
         n = len(weights)
         dp = [[-1 for _ in range(max_capacity + 1)] for _ in range(n)]
         max_profit = self.solve(n-1, max_capacity, weights, values, dp)
 
         print("The max profit by recursion-memoization is " + str(max_profit))
+
+        items = []
+        self.get_selected_items(n, max_capacity, weights, dp, items)
+        print("Items selected: ", items)
 
     def tabulation(self, max_capacity, weights, values):
         n = len(weights)
@@ -41,6 +63,10 @@ class KnapSack:
                 dp[i][w] = max(taken, not_taken)
         
         print("The max profit by tabulation is " + str(dp[n-1][max_capacity]))
+
+        items = []
+        self.get_selected_items(n, max_capacity, weights, dp, items)
+        print("Items selected: ", items)
 
     def space_optimized(self, max_capacity, weights, values):
         n = len(weights)

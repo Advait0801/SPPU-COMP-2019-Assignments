@@ -16,6 +16,27 @@ class KnapSack {
         return dp[i][capacity] = max(taken, notTaken);
     }
 
+    void getSelectedItems(int n, int capacity, vector<int> &weights, vector<vector<int>> &dp, vector<int> &selectedItems) {
+        int i = n - 1, w = capacity;
+
+        while (i >= 0 && w > 0) {
+            if (i == 0) {
+                if (dp[i][w] != 0) selectedItems.push_back(i);
+                break;
+            }
+
+            if (dp[i][w] != dp[i - 1][w]) {
+                selectedItems.push_back(i);
+                w -= weights[i];
+            }
+            
+            i--;
+        }
+
+        reverse(selectedItems.begin(), selectedItems.end());
+    }
+
+
 public:
     void memoization(int maxCapacity, vector<int> &weights, vector<int> &values) {
         int n = weights.size();
@@ -23,6 +44,14 @@ public:
         int maxProfit = solve(n-1, maxCapacity, weights, values, dp);
 
         cout<<"The max profit by recursion-memoization is "<<maxProfit<<endl;  
+
+        vector<int> items;
+        getSelectedItems(n, maxCapacity, weights, dp, items);
+        cout<<"Items selected: ";
+        for(int i : items) {
+            cout<<i<<" ";
+        }
+        cout<<endl;
     }
 
     void tabulation(int maxCapacity, vector<int> &weights, vector<int> &values) {
@@ -42,6 +71,14 @@ public:
         }
 
         cout<<"The max profit by tabulation is "<<dp[n-1][maxCapacity]<<endl;
+
+        vector<int> items;
+        getSelectedItems(n, maxCapacity, weights, dp, items);
+        cout<<"Items selected: ";
+        for(int i : items) {
+            cout<<i<<" ";
+        }
+        cout<<endl;
     }
 
     void spaceOptimized(int maxCapacity, vector<int> &weights, vector<int> &values) {
