@@ -13,8 +13,9 @@ contract StudentData {
     // An array to hold all students
     Student[] public students;
 
-    // Event to log student data when added
+    // Event to log student data when added and removed
     event StudentAdded(string name, uint256 rollNumber);
+    event StudentRemoved(string name, uint256 rollNumber);
 
     // Event to log Ether received in the fallback function
     event FallbackCalled(address sender, uint256 amount, string message);
@@ -40,10 +41,51 @@ contract StudentData {
     }
 
     // Function to retrieve a student's details by index
-    function getStudent(uint256 index) public view returns (string memory, uint256, string memory, uint256) {
-        require(index < students.length, "Invalid index");
-        Student memory student = students[index];
+    function getStudent(uint256 roll) public view returns (string memory, uint256, string memory, uint256) {
+        require(roll > 0, "Invalid roll number");
+
+        Student memory student;
+        bool found = false;
+        uint256 n = students.length;
+        for(uint256 i=0;i<n;i++) {
+            if(students[i].rollNumber == roll) {
+                student = students[i];
+                found = true;
+                break;
+            }
+        }
+
+        if(found == false) {
+            return ("No student found", 0, "Invalid roll no", 0);
+        }
+
         return (student.name, student.age, student.class, student.rollNumber);
+    }
+
+    function removeStudent(uint256 roll) public {
+        require(roll > 0, "Invalid roll number");
+
+        Student memory student;
+        uint256 n = students.length;
+        uint256 index = n + 1;        
+        for(uint256 i=0;i<n;i++) {
+            if(students[i].rollNumber == roll) {
+                student = students[i];
+                index = i;
+                break;
+            }
+        }
+
+        if(index == n + 1) {
+            emit StudentRemoved("No student exists.. invalid roll no", roll);
+        }
+
+        for(uint256 i=index;i<n-1;i++) {
+            students[i] = students[i+1];
+        }
+
+        students.pop();
+        emit StudentRemoved(student.name, student.rollNumber);
     }
 
     // Fallback function to handle unexpected calls or when there is data but no matching function
