@@ -2,6 +2,9 @@
 
 ## Subjects
 
+### Semester 8
+1. [HPC](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/HPC)
+
 ### Semester 7
 1. [DAA](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/DAA)
 2. [ML](https://github.com/Advait0801/SPPU-COMP-2019-Assignments/tree/ML)
