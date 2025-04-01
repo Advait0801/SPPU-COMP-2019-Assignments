@@ -3,10 +3,10 @@ using namespace std;
 
 template <typename E>
 class ParallelReduction {
-    std::vector<E> arr;
+    vector<E> arr;
 
 public:
-    ParallelReduction(const std::vector<E>& inputArr) : arr(inputArr) {}
+    ParallelReduction(const vector<E>& inputArr) : arr(inputArr) {}
 
     E sum() {
         E sum = 0;
@@ -18,19 +18,19 @@ public:
     }
 
     E min() {
-        E minElement = std::numeric_limits<E>::max();
+        E minElement = numeric_limits<E>::max();
         #pragma omp parallel for reduction(min: minElement)
         for(size_t i = 0; i < arr.size(); i++) {
-            minElement = std::min(minElement, arr[i]);
+            minElement = min(minElement, arr[i]);
         }
         return minElement;
     }
 
     E max() {
-        E maxElement = std::numeric_limits<E>::min();
+        E maxElement = numeric_limits<E>::min();
         #pragma omp parallel for reduction(max: maxElement)
         for(size_t i = 0; i < arr.size(); i++) {
-            maxElement = std::max(maxElement, arr[i]);
+            maxElement = max(maxElement, arr[i]);
         }
         return maxElement;
     }
@@ -42,21 +42,21 @@ public:
 };
 
 int main() {
-    std::vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     ParallelReduction<int> pr(arr);
 
     int sumValue = pr.sum();
-    std::cout << "Sum: " << sumValue << '\n';
+    cout << "Sum: " << sumValue << '\n';
 
     int maxValue = pr.max();
-    std::cout << "Max: " << maxValue << '\n';
+    cout << "Max: " << maxValue << '\n';
 
     int minValue = pr.min();
-    std::cout << "Min: " << minValue << '\n';
+    cout << "Min: " << minValue << '\n';
 
     double meanValue = pr.mean();
-    std::cout << "Mean: " << meanValue << '\n';
+    cout << "Mean: " << meanValue << '\n';
 
     return 0;
 }
