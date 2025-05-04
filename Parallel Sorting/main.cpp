@@ -63,7 +63,7 @@ public:
 
         for(int i=0;i<n-1 && swapped;i++) {
             swapped = false;
-            for(int j=0;j<n-1-i;j++) {
+            for(int j=0;j<n-1;j++) {
                 if(arr[j] > arr[j+1]) {
                     swap(arr[j], arr[j+1]);
                     swapped = true;
@@ -145,6 +145,7 @@ int main() {
     for(auto it : arr) {
         cout<<it<<" ";
     }
+    cout<<endl;
 
     ParallelSorting<int> ps1(arr);
     ps1.sequentialBubbleSort();
@@ -164,3 +165,6 @@ int main() {
 
     return 0;    
 }
+
+// complie with g++ -fopenmp -o main main.cpp
+//  run with ./main
