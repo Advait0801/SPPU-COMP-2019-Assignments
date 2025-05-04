@@ -1,4 +1,5 @@
 import multiprocessing
+import time
 
 class TreeNode:
     """ Node structure for the binary tree. """
@@ -32,8 +33,37 @@ class BinaryTree:
             else:
                 queue.append(node.right)
 
+    def sequential_bfs(self):
+        """ Perform sequential BFS. """
+        start = time.time()
+
+        if not self.root:
+            return
+        
+        print("Sequential BFS:", end=" ", flush=True)
+        queue = [self.root]
+        visited = set()
+
+        while queue:
+            node = queue.pop(0)
+            if node.val not in visited:
+                visited.add(node.val)
+                print(node.val, end=" ", flush=True)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+        print()
+
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
+
     def parallel_bfs(self):
         """ Perform parallel BFS using multiprocessing. """
+        start = time.time()
+
         if not self.root:
             return
         
@@ -51,8 +81,41 @@ class BinaryTree:
         
         print()
 
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
+
+    def sequential_dfs(self):
+        """ Perform sequential DFS. """
+        start = time.time()
+
+        if not self.root:
+            return
+        
+        print("Sequential DFS:", end=" ", flush=True)
+        stack = [self.root]
+        visited = set()
+
+        while stack:
+            node = stack.pop()
+            if node.val not in visited:
+                visited.add(node.val)
+                print(node.val, end=" ", flush=True)
+                if node.right:
+                    stack.append(node.right)
+                if node.left:
+                    stack.append(node.left)
+
+        print()
+
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
+
     def parallel_dfs(self):
         """ Perform parallel DFS using multiprocessing. """
+        start = time.time()
+
         if not self.root:
             return
         
@@ -69,6 +132,10 @@ class BinaryTree:
             p.join()
 
         print()
+
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
 
 def bfs_worker(queue, visited, lock):
     """ Parallel BFS Worker function. """
@@ -112,4 +179,6 @@ if __name__ == "__main__":
         tree.insert(val)
 
     tree.parallel_bfs()
+    tree.sequential_bfs()
     tree.parallel_dfs()
+    tree.sequential_dfs()

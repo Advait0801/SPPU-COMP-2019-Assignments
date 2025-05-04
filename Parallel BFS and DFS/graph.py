@@ -1,4 +1,5 @@
 import multiprocessing
+import time
 
 class Graph:
     def __init__(self, vertices):
@@ -9,7 +10,31 @@ class Graph:
         self.adj[u].append(v)
         self.adj[v].append(u)
 
+    def sequential_bfs(self, start_node):
+        start = time.time()
+
+        print(f"The sequential BFS of graph from {start_node} is....")
+        visited = [False] * self.num_vertices
+        q = [start_node]
+        visited[start_node] = True
+
+        while q:
+            node = q.pop(0)
+            print(node, end=" ", flush=True)
+
+            for neighbor in self.adj[node]:
+                if not visited[neighbor]:
+                    visited[neighbor] = True
+                    q.append(neighbor)
+        print()
+
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
+
     def parallel_bfs(self, start_node):
+        start = time.time()
+
         print(f"The parallel BFS of graph from {start_node} is....")
 
         manager = multiprocessing.Manager()
@@ -28,7 +53,35 @@ class Graph:
             p.join()
         print()
 
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
+
+    def sequential_dfs(self, start_node):
+        start = time.time()
+
+        print(f"The sequential DFS of graph from {start_node} is....")
+        visited = [False] * self.num_vertices
+        stack = [start_node]
+        visited[start_node] = True
+
+        while stack:
+            node = stack.pop()
+            print(node, end=" ", flush=True)
+
+            for neighbor in self.adj[node]:
+                if not visited[neighbor]:
+                    visited[neighbor] = True
+                    stack.append(neighbor)
+        print()
+
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
+
     def parallel_dfs(self, start_node):
+        start = time.time()
+
         print(f"The parallel DFS of graph from {start_node} is....")
 
         manager = multiprocessing.Manager()
@@ -46,6 +99,10 @@ class Graph:
         for p in processes:
             p.join()
         print()
+
+        end = time.time()
+        elapsed_time = (end - start) * 1000  # Convert to milliseconds
+        print(f"Time taken: {elapsed_time:.3f} milliseconds")
 
 def worker_bfs(adj, visited, q):
     while not q.empty():
@@ -88,4 +145,6 @@ if __name__ == "__main__":
     g.add_edge(4, 5)
 
     g.parallel_bfs(0)
+    g.sequential_bfs(0)
     g.parallel_dfs(0)
+    g.sequential_dfs(0)

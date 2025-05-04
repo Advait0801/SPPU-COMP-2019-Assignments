@@ -15,7 +15,32 @@ public:
         root = new TreeNode(rootVal);
     }
 
+    void sequentialBFS() {
+        auto start = chrono::high_resolution_clock::now();
+
+        if (!root) return;        
+
+        queue<TreeNode*> q;
+        q.push(root);
+        cout<<"The sequential BFS of the given tree is..."<<endl;
+    
+        while(!q.empty()) {
+            TreeNode* node = q.front();
+            q.pop();
+            cout<<node -> val<<" ";
+    
+            if(node -> left) q.push(node -> left);
+            if(node -> right) q.push(node -> right);
+        }
+        cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for sequential BFS: " << duration << " microseconds" << endl;
+    }
+
     void parallelBFS() {
+        auto start = chrono::high_resolution_clock::now();
         if (!root) return;
 
         queue<TreeNode*> q;
@@ -46,10 +71,38 @@ public:
             }
         }
         cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for parallel BFS: " << duration << " microseconds" << endl;
     }
-    
+
+    void sequentialDFS() {
+        auto start = chrono::high_resolution_clock::now();
+
+        if (!root) return;
+
+        stack<TreeNode*> s;
+        s.push(root);
+        cout<<"The sequential DFS of the given tree is..."<<endl;
+
+        while(!s.empty()) {
+            TreeNode* node = s.top();
+            s.pop();
+            cout<<node -> val<<" ";
+
+            if(node -> right) s.push(node -> right);
+            if(node -> left) s.push(node -> left);
+        }
+        cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for sequential DFS: " << duration << " microseconds" << endl;
+    }    
 
     void parallelDFS() {
+        auto start = chrono::high_resolution_clock::now();
         if (!root) return;
 
         stack<TreeNode*> s;
@@ -91,6 +144,10 @@ public:
             }
         }
         cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for parallel DFS: " << duration << " microseconds" << endl;
     }
 };
 
@@ -104,7 +161,9 @@ int main() {
     tree.root->right->right = new TreeNode(7);
 
     tree.parallelBFS();
+    tree.sequentialBFS();
     tree.parallelDFS();
+    tree.sequentialDFS();
 
     return 0;
 }

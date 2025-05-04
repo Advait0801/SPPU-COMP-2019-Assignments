@@ -16,7 +16,38 @@ public:
         adj[v].push_back(u);
     }
 
+    void sequentialBFS(int startNode) {
+        auto start = chrono::high_resolution_clock::now();
+        
+        cout<<"The sequential BFS of graph from "<<startNode<<" is...."<<endl;
+
+        vector<bool> visited(numVertices, false);
+        queue<int> q;
+        q.push(startNode);
+        visited[startNode] = true;
+
+        while(!q.empty()) {
+            int node = q.front();
+            q.pop();
+            cout << node << " ";
+
+            for(int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    q.push(neighbor);
+                }
+            }
+        }
+        cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for sequential BFS: " << duration << " microseconds" << endl;
+    }
+
     void parallelBFS(int startNode) {
+        auto start = chrono::high_resolution_clock::now();
+
         cout<<"The parallel BFS of graph from "<<startNode<<" is...."<<endl;
 
         vector<bool> visited(numVertices, false);
@@ -62,10 +93,45 @@ public:
             }
         }
         cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for parallel BFS: " << duration << " microseconds" << endl;
+    }
+
+    void sequentialDFS(int startNode) {
+        auto start = chrono::high_resolution_clock::now();
+
+        cout<<"The sequential DFS of graph from "<<startNode<<" is...."<<endl;
+
+        vector<bool> visited(numVertices, false);
+        stack<int> s;
+        s.push(startNode);
+        visited[startNode] = true;
+
+        while(!s.empty()) {
+            int node = s.top();
+            s.pop();
+            cout << node << " ";
+
+            for(int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    s.push(neighbor);
+                }
+            }
+        }
+        cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for sequential DFS: " << duration << " microseconds" << endl;
     }
 
     void parallelDFS(int startNode) {
-        cout<<"The parallel DFS of graph from "<<startNode<<" is...."<<endl;
+        auto start = chrono::high_resolution_clock::now();
+
+        cout<<"The parallel DFS of graph from "<<startNode<<" is...."<<endl;        
 
         vector<bool> visited(numVertices, false);
         stack<int> s;
@@ -110,6 +176,10 @@ public:
             }
         }
         cout<<endl;
+
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
+        cout << "Time taken for parallel DFS: " << duration << " microseconds" << endl;
     }
 };
 
@@ -124,7 +194,9 @@ int main() {
     g.addEdge(4, 5);
 
     g.parallelBFS(0);
+    g.sequentialBFS(0);
     g.parallelDFS(0);
+    g.sequentialDFS(0);
 
     return 0;
 }
